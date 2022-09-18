@@ -1,0 +1,43 @@
+<div class="tui-container tui-container_adaptive">
+    <div class="wrapper tui-row tui-row_adaptive">
+        <div class="tui-col_xs-0 tui-col_md-2 tui-col_lg-3"></div>
+        <div class="tui-col_xs-12 tui-col_md-8 tui-col_lg-6">
+            <tui-island [hoverable]="true">
+                <form [formGroup]="loginForm">
+                    <h1 class="tui-space_bottom-10 tui-left-1">Вход в CRM</h1>
+                    <tui-input
+                        class="tui-form__row"
+                        formControlName="login"
+                    >
+                        Login
+                        <span class="tui-required"></span>
+                    </tui-input>
+                    <tui-error
+                        formControlName="login"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
+
+                    <tui-input
+                        class="tui-form__row"
+                        formControlName="password"
+                    >
+                        Password
+                        <span class="tui-required"></span>
+                    </tui-input>
+                    <tui-error
+                        formControlName="password"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
+
+                    <button
+                        style="width: 100%"
+                        class="tui-form__row tui-space_bottom-3"
+                        (click)="submit()"
+                        tuiButton
+                    >Войти</button>
+                </form>
+            </tui-island>
+        </div>
+        <div class="tui-col_xs-0 tui-col_md-2 tui-col_lg-3"></div>
+    </div>
+</div>

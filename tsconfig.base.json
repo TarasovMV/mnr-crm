@@ -1,20 +1,29 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {}
-  },
-  "exclude": ["node_modules", "tmp"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2017", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@mnr-crm/client/classes": ["apps/client/src/app/classes"],
+            "@mnr-crm/client/classes/*": ["apps/client/src/app/classes/*"],
+            "@mnr-crm/client/components/*": [
+                "apps/client/src/app/components/*"
+            ],
+            "@mnr-crm/client/services": ["apps/client/src/app/services"],
+            "@mnr-crm/client/services/*": ["apps/client/src/app/services/*"],
+            "@mnr-crm/shared-models": ["libs/shared-models/src/index.ts"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
 }

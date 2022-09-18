@@ -1,0 +1,57 @@
+<div class="tui-text_h3">MNR CRM</div>
+
+<div class="navbar">
+    <div class="nav" [class.nav__active]="(activeMenu$ | async) === 'dashboard'" (click)="goToDashboard()">
+        <div>Главная</div>
+    </div>
+    <tui-hosted-dropdown
+        class="menu tui-space_right-1"
+        tuiDropdownAlign="left"
+        [content]="referencesTpl"
+        [(open)]="isReferenceMenuOpen"
+    >
+        <div class="nav" [class.nav__active]="(activeMenu$ | async) === 'reference'">
+            <div>Справочники</div>
+            <tui-svg src="tuiIconChevronDown"></tui-svg>
+        </div>
+    </tui-hosted-dropdown>
+</div>
+
+<tui-hosted-dropdown
+    class="menu tui-space_right-1"
+    tuiDropdownAlign="left"
+    [content]="menuTpl"
+    [(open)]="isDotMenuOpen"
+>
+    <button
+        tuiIconButton
+        type="button"
+        appearance="flat"
+        icon="tuiIconMoreVertLarge"
+    ></button>
+</tui-hosted-dropdown>
+
+<ng-template #menuTpl>
+    <tui-data-list>
+        <button
+            *ngFor="let item of menu"
+            tuiOption
+            (click)="isDotMenuOpen = false; item.action();"
+        >
+            {{item.label}}
+        </button>
+    </tui-data-list>
+</ng-template>
+
+
+<ng-template #referencesTpl>
+    <tui-data-list>
+        <button
+            *ngFor="let item of references"
+            tuiOption
+            (click)="isReferenceMenuOpen = false; chooseRef(item);"
+        >
+            {{item.label}}
+        </button>
+    </tui-data-list>
+</ng-template>

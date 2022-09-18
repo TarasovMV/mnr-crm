@@ -1,0 +1,47 @@
+:host {
+    display: flex;
+    flex-flow: column;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+
+.legend {
+    margin-left: auto;
+    display: flex;
+    gap: 1.5rem;
+
+    &__item {
+        display: flex;
+        align-items: center;
+    }
+
+    .circle {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        margin-right: .5rem;
+
+        &_default {
+            border: solid 1px black;
+        }
+
+        &_yellow {
+            background: var(--tui-support-11);
+        }
+
+        &_blue {
+            background: var(--tui-support-01);
+        }
+
+        &_green {
+            background: var(--tui-support-15);
+        }
+
+        &_red {
+            background: var(--tui-support-05);
+        }
+    }
+}
