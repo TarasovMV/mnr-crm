@@ -1,24 +1,24 @@
 # Base image
-FROM node:18
+FROM node
+
+ENV DB_URL default
+#ARG DB_URL_ARG
 
 # Create app directory
 WORKDIR /usr/bin
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
-#COPY package*.json ./
-#COPY decorate-angular-cli.js ./
-
-COPY . .
+COPY package*.json ./
+COPY decorate-angular-cli.js ./
 
 # Install app dependencies
-RUN npm i --force
-#CMD ["npm run i --force"]
+RUN npm ci --legacy-peer-deps
 
 # Bundle app source
-#COPY . .
+COPY . .
 
 # Creates a "dist" folder with the production build
-RUN nx build backend
+RUN npm run build backend
 
 # Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+CMD node dist/apps/backend/main.js DB_URL=${DB_URL}
