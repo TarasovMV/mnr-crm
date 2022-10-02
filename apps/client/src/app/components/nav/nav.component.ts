@@ -36,10 +36,6 @@ export class NavComponent {
             label: 'Продукция',
             url: 'products',
         },
-        {
-            label: 'Поступления',
-            url: 'incomes',
-        },
     ];
 
     readonly menu = [
@@ -57,7 +53,7 @@ export class NavComponent {
             filter(e => e instanceof NavigationEnd),
             map(({url}: any) => url),
             startWith(this.router.url),
-            map(url => url.includes('dashboard') ? 'dashboard' : 'reference'),
+            map(url => url.includes('dashboard') ? 'dashboard' : url.includes('incomes') ? 'incomes' : 'reference'),
         );
 
     constructor(
@@ -65,8 +61,8 @@ export class NavComponent {
         private readonly router: Router,
     ) {}
 
-    goToDashboard(): void {
-        this.router.navigate(['dashboard']).then();
+    goToPage(page: 'incomes' | 'dashboard'): void {
+        this.router.navigate([page]).then();
     }
 
     chooseRef({url}: {url: string}): void {

@@ -14,6 +14,8 @@ import {TuiDestroyService} from '@taiga-ui/cdk';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VendorsFormComponent extends ReferenceFormBase<Vendor> {
+    protected readonly type = 'vendors';
+
     readonly form = new FormGroup({
         name: new FormControl('', [Validators.required]),
         address: new FormControl('', [Validators.required]),
@@ -24,11 +26,5 @@ export class VendorsFormComponent extends ReferenceFormBase<Vendor> {
         phone: new FormControl('', [Validators.required]),
     });
 
-    constructor(private readonly apiReferences: ApiReferencesService) {
-        super();
-    }
-
-    protected override create(data: Buyer): Observable<Vendor> {
-        return this.apiReferences.createReferenceItem('vendors', data);
-    }
+    constructor() { super() }
 }

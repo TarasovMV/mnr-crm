@@ -21,8 +21,7 @@
                 "*.tsx"
             ],
             "extends": [
-                "plugin:@nrwl/nx/typescript",
-                "plugin:import/typescript"
+                "plugin:@nrwl/nx/typescript"
             ],
             "rules": {}
         },

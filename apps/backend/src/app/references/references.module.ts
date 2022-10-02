@@ -18,7 +18,6 @@ import {ReferencesService} from './references.service';
     imports: [
         MongooseModule.forFeature([
             { name: dbNameMapper[BuyerDto.name], schema: BuyerSchema },
-            { name: dbNameMapper[IncomeDto.name], schema: IncomeSchema },
             { name: dbNameMapper[ProductDto.name], schema: ProductSchema },
             { name: dbNameMapper[ProviderDto.name], schema: ProviderSchema },
             { name: dbNameMapper[UserDto.name], schema: UserSchema },

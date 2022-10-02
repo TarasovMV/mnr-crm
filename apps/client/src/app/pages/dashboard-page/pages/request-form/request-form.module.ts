@@ -13,6 +13,7 @@ import {
 import {TuiButtonModule, TuiDataListModule, TuiErrorModule, TuiTextfieldControllerModule} from '@taiga-ui/core';
 import {RouterModule} from '@angular/router';
 import {TuiLetModule} from '@taiga-ui/cdk';
+import {TuiMobileCalendarDialogModule} from '@taiga-ui/addon-mobile';
 
 @NgModule({
     declarations: [RequestFormComponent],
@@ -35,6 +36,7 @@ import {TuiLetModule} from '@taiga-ui/cdk';
         TuiInputNumberModule,
         TuiSelectModule,
         TuiDataListModule,
+        TuiMobileCalendarDialogModule,
         TuiInputDateModule,
         TuiButtonModule
     ],

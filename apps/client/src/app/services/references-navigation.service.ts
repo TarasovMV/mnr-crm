@@ -12,6 +12,10 @@ export class ReferencesNavigationService {
         this.router.navigate(['new'], {relativeTo: this.route}).then();
     }
 
+    editRedirect(id: string): void {
+        this.router.navigate([id], {relativeTo: this.route}).then();
+    }
+
     backToMain(): void {
         this.router.navigate(['../'], {relativeTo: this.route}).then();
     }

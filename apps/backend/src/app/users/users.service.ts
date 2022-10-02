@@ -31,8 +31,14 @@ export class UsersService {
         });
     }
 
+    async updateUser(id: string, user: User): Promise<User> {
+        user.password = await bcrypt.hash(user.password, 10);
+
+        return this.usersQuery.findOneAndUpdate({_id: id }, user);
+    }
+
     async validateUser(username: string, password: string): Promise<User | null> {
-        const user = (await this.usersQuery.findOne({username}).exec()).toObject() as User;
+        const user = (await this.usersQuery.findOne({username}).exec())?.toObject() as User;
 
         if (!user) {
             return null;

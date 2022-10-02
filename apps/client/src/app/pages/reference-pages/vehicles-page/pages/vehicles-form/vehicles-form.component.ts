@@ -2,9 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {ApiReferencesService, ReferencesNavigationService} from '@mnr-crm/client/services';
 import {ReferenceFormBase} from '@mnr-crm/client/classes';
 import {Vehicle} from '@mnr-crm/shared-models';
-import {Observable} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {TuiDay, TuiDestroyService} from '@taiga-ui/cdk';
+import {TuiDestroyService} from '@taiga-ui/cdk';
 
 @Component({
     selector: 'mnr-crm-vehicles-form',
@@ -14,6 +13,8 @@ import {TuiDay, TuiDestroyService} from '@taiga-ui/cdk';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VehiclesFormComponent extends ReferenceFormBase<Vehicle> {
+    protected readonly type = 'vehicles';
+
     readonly form = new FormGroup({
         brand: new FormControl('', [Validators.required]),
         model: new FormControl('', [Validators.required]),
@@ -22,11 +23,5 @@ export class VehiclesFormComponent extends ReferenceFormBase<Vehicle> {
         trailNumber: new FormControl('', [Validators.required]),
     });
 
-    constructor(private readonly apiReferences: ApiReferencesService) {
-        super();
-    }
-
-    protected override create(data: Vehicle): Observable<Vehicle> {
-        return this.apiReferences.createReferenceItem('vehicles', data);
-    }
+    constructor() { super() }
 }

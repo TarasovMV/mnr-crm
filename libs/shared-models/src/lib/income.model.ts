@@ -1,3 +1,10 @@
+export enum IncomeType {
+    Income = 'INCOME',
+    Return = 'RETURN',
+    Inverse = 'INVERSE',
+    Purchase = 'PURCHASE',
+}
+
 export interface Income {
     id?: string;
     company: string;
@@ -5,6 +12,7 @@ export interface Income {
     count: number;
     density: number;
     temperature: number;
-    type: string;
+    weight: number;
+    type: IncomeType;
     date: Date;
 }

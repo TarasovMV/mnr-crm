@@ -2,7 +2,7 @@
     <div class="wrapper tui-row tui-row_adaptive">
         <div class="tui-col_xs-0 tui-col_md-2 tui-col_lg-3"></div>
         <div class="tui-col_xs-12 tui-col_md-8 tui-col_lg-6">
-            <tui-island [hoverable]="true">
+            <tui-island [hoverable]="false">
                 <form [formGroup]="loginForm">
                     <h1 class="tui-space_bottom-10 tui-left-1">Вход в CRM</h1>
                     <tui-input
@@ -17,13 +17,13 @@
                         [error]="[] | tuiFieldError | async"
                     ></tui-error>
 
-                    <tui-input
+                    <tui-input-password
                         class="tui-form__row"
                         formControlName="password"
                     >
                         Password
                         <span class="tui-required"></span>
-                    </tui-input>
+                    </tui-input-password>
                     <tui-error
                         formControlName="password"
                         [error]="[] | tuiFieldError | async"

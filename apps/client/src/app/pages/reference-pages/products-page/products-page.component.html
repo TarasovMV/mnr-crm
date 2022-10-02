@@ -9,19 +9,78 @@
     >Добавить</button>
 </div>
 
-<table class="tui-table">
+<ng-container *ngIf="isMobile">
+    <mnr-crm-item-card *ngFor="let item of data$ | async">
+        <tui-hosted-dropdown
+            [(open)]="menu[item.id!]"
+            class="item-card-menu"
+            tuiDropdownAlign="left"
+            [content]="menuTpl"
+        >
+            <button
+                tuiIconButton
+                icon="tuiIconMoreVer"
+                shape="rounded"
+                appearance="icon"
+                size="xs"
+            ></button>
+        </tui-hosted-dropdown>
+        <mnr-crm-item-card-prop
+            label="Название"
+            [description]="item.name"
+        ></mnr-crm-item-card-prop>
+        <mnr-crm-item-card-prop
+            label="Сокращенное название"
+            [description]="item.shortName"
+        ></mnr-crm-item-card-prop>
+        <mnr-crm-item-card-prop
+            label="Код"
+            [description]="item.code"
+        ></mnr-crm-item-card-prop>
+    </mnr-crm-item-card>
+</ng-container>
+
+<table *ngIf="!isMobile" class="tui-table">
     <tbody>
     <tr class="tui-table__tr tui-table__tr_border_none">
-        <th class="tui-table__th tui-table__th_first">ID</th>
-        <th class="tui-table__th">Название</th>
+        <th class="tui-table__th tui-table__th_first">Название</th>
         <th class="tui-table__th">Сокращенное название</th>
-        <th class="tui-table__th tui-table__th_last">Код</th>
+        <th class="tui-table__th">Код</th>
+        <th class="tui-table__th tui-table__th_last"></th>
     </tr>
     <tr *ngFor="let item of data$ | async" class="tui-table__tr tui-table__tr_border_none">
-        <td class="tui-table__td tui-table__td_first">{{item.id}}</td>
-        <td class="tui-table__td">{{item.name}}</td>
+        <td class="tui-table__td tui-table__td_first">{{item.name}}</td>
         <td class="tui-table__td">{{item.shortName}}</td>
+        <td class="tui-table__td">{{item.code}}</td>
         <td class="tui-table__td tui-table__td_last">{{item.code}}</td>
+        <td class="tui-table__td tui-table__td_last">
+            <tui-hosted-dropdown
+                [(open)]="menu[item.id!]"
+                class="menu tui-space_right-1"
+                tuiDropdownAlign="left"
+                [content]="menuTpl"
+            >
+                <button
+                    tuiIconButton
+                    icon="tuiIconMoreVer"
+                    shape="rounded"
+                    appearance="icon"
+                    size="xs"
+                ></button>
+            </tui-hosted-dropdown>
+        </td>
     </tr>
     </tbody>
 </table>
+
+<ng-template #menuTpl>
+    <tui-data-list>
+        <button
+            *ngFor="let item of context"
+            tuiOption
+            (click)="item.action()"
+        >
+            {{item.label}}
+        </button>
+    </tui-data-list>
+</ng-template>

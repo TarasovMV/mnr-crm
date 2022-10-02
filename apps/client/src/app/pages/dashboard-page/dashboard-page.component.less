@@ -1,6 +1,22 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+
 :host {
     display: flex;
     flex-flow: column;
+}
+
+tr {
+    position: relative;
+}
+
+.table-status {
+    position: absolute;
+    left: -10px;
+    top: 6px;
+    bottom: 6px;
+    width: 4px;
+    border-radius: 2px;
+    border: none !important;
 }
 
 .row {
@@ -23,25 +39,40 @@
         height: 1.5rem;
         border-radius: 50%;
         margin-right: .5rem;
+    }
+}
 
-        &_default {
-            border: solid 1px black;
-        }
+.color {
+    &_default {
+        border: solid 1px black;
+    }
 
-        &_yellow {
-            background: var(--tui-support-11);
-        }
+    &_yellow {
+        background: var(--tui-support-11);
+    }
 
-        &_blue {
-            background: var(--tui-support-01);
-        }
+    &_blue {
+        background: var(--tui-support-01);
+    }
 
-        &_green {
-            background: var(--tui-support-15);
-        }
+    &_green {
+        background: var(--tui-support-15);
+    }
 
-        &_red {
-            background: var(--tui-support-05);
-        }
+    &_red {
+        background: var(--tui-support-05);
+    }
+}
+
+@media @tui-mobile {
+    .row {
+        flex-flow: column;
+        align-items: start;
+    }
+
+    .legend {
+        flex-flow: column;
+        margin-left: 0;
+        margin-top: 2rem;
     }
 }

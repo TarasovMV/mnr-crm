@@ -2,7 +2,13 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {LoginPageComponent} from './login-page.component';
 import {RouterModule} from '@angular/router';
-import {TuiFieldErrorPipeModule, TuiInputModule, TuiIslandModule, TuiSelectModule} from '@taiga-ui/kit';
+import {
+    TuiFieldErrorPipeModule,
+    TuiInputModule,
+    TuiInputPasswordModule,
+    TuiIslandModule,
+    TuiSelectModule
+} from '@taiga-ui/kit';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TuiButtonModule, TuiErrorModule} from '@taiga-ui/core';
 
@@ -17,6 +23,7 @@ import {TuiButtonModule, TuiErrorModule} from '@taiga-ui/core';
         TuiButtonModule,
         TuiErrorModule,
         TuiFieldErrorPipeModule,
+        TuiInputPasswordModule,
     ],
 })
 export class LoginPageModule {

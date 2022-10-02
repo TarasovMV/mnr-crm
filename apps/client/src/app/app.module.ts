@@ -5,7 +5,6 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {RouterOutlet} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
@@ -17,7 +16,6 @@ import {of} from 'rxjs';
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-        RouterOutlet,
         HttpClientModule,
 
         TuiRootModule,

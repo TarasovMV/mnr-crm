@@ -1,8 +1,11 @@
-<div class="tui-text_h3">MNR CRM</div>
+<div class="title tui-text_h3">MNR CRM</div>
 
 <div class="navbar">
-    <div class="nav" [class.nav__active]="(activeMenu$ | async) === 'dashboard'" (click)="goToDashboard()">
-        <div>Главная</div>
+    <div class="nav" [class.nav__active]="(activeMenu$ | async) === 'dashboard'" (click)="goToPage('dashboard')">
+        <div>Заявки</div>
+    </div>
+    <div class="nav" [class.nav__active]="(activeMenu$ | async) === 'incomes'" (click)="goToPage('incomes')">
+        <div>Приходы</div>
     </div>
     <tui-hosted-dropdown
         class="menu tui-space_right-1"

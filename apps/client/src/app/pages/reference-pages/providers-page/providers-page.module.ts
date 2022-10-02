@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProvidersPageComponent } from './providers-page.component';
 import { RouterModule } from '@angular/router';
-import {TuiButtonModule} from '@taiga-ui/core';
+import {TuiButtonModule, TuiDataListModule, TuiHostedDropdownModule} from '@taiga-ui/core';
+import {ItemCardModule} from '@mnr-crm/client/components/item-card/item-card.module';
+import {ItemCardPropModule} from '@mnr-crm/client/components/item-card/components/item-card-prop/item-card-prop.module';
 
 @NgModule({
     declarations: [ProvidersPageComponent],
@@ -16,6 +18,10 @@ import {TuiButtonModule} from '@taiga-ui/core';
             },
         ]),
         TuiButtonModule,
+        TuiDataListModule,
+        TuiHostedDropdownModule,
+        ItemCardModule,
+        ItemCardPropModule,
     ],
 })
 export class ProvidersPageModule {}

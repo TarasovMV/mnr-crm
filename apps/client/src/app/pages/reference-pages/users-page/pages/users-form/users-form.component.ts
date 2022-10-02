@@ -2,9 +2,10 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User, UserRole} from '@mnr-crm/shared-models';
 import {TuiContextWithImplicit, TuiDestroyService, tuiPure, TuiStringHandler} from '@taiga-ui/cdk';
-import {ReferencesNavigationService, ApiReferencesService} from '@mnr-crm/client/services';
-import {Observable} from 'rxjs';
+import {ReferencesNavigationService} from '@mnr-crm/client/services';
 import {ReferenceFormBase} from '@mnr-crm/client/classes';
+import {userRoleMapper} from '../../utils';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'mnr-crm-users-form',
@@ -14,30 +15,23 @@ import {ReferenceFormBase} from '@mnr-crm/client/classes';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersFormComponent extends ReferenceFormBase<User> {
+    protected readonly type = 'users';
+
     readonly form = new FormGroup({
         username: new FormControl('', [Validators.required]),
         password: new FormControl('', [Validators.required]),
         fio: new FormControl('', [Validators.required]),
-        job: new FormControl('', [Validators.required]),
         phone: new FormControl('', [Validators.required]),
         mail: new FormControl('', [Validators.required, Validators.email]),
-        role: new FormControl(undefined, [Validators.required]),
+        role: new FormControl(null, [Validators.required]),
     });
 
-    readonly rolesReference = [
-        {
-            label: 'Администратор',
-            type: UserRole.Admin
-        },
-        {
-            label: 'Пользователь',
-            type: UserRole.Default
-        },
-    ];
+    readonly rolesReference = Object.entries(userRoleMapper).map((role) => ({
+        label: role[1],
+        type: role[0],
+    })).filter((role) => role.type !== UserRole.SuperUser);
 
-    constructor(private readonly apiReferences: ApiReferencesService) {
-        super();
-    }
+    constructor() { super() }
 
     @tuiPure
     stringifyRole(
@@ -46,7 +40,13 @@ export class UsersFormComponent extends ReferenceFormBase<User> {
         return ({$implicit}) => items.find(x => x.type === $implicit)?.label || '';
     }
 
-    protected override create(data: User): Observable<User> {
+    protected override save(data: User): Observable<User> {
+        const id = this.referenceId$.getValue();
+
+        if (id) {
+            return this.apiReferences.updateUser(id, data);
+        }
+
         return this.apiReferences.createUser(data);
     }
 }

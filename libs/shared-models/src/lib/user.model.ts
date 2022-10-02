@@ -1,6 +1,11 @@
 export enum UserRole {
     SuperUser = 'SUPER_USER',
     Admin = 'ADMIN',
+    Manager = 'MANAGER',
+    Storekeeper = 'STOREKEEPER',
+    Logistician = 'LOGISTICIAN',
+    Counter = 'COUNTER',
+    Driver = 'DRIVER',
     Default = 'DEFAULT',
 }
 
@@ -12,7 +17,6 @@ export interface User {
     phone: string;
     mail: string;
     password: string;
-    job: string;
     role: UserRole;
     token?: string;
 }

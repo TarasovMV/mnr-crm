@@ -1,20 +1,31 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {TuiContextWithImplicit, TuiDay, TuiDestroyService, tuiPure, TuiStringHandler} from '@taiga-ui/cdk';
+import {
+    TuiContextWithImplicit,
+    TuiDay,
+    TuiDestroyService,
+    tuiIsPresent,
+    tuiPure,
+    TuiStringHandler
+} from '@taiga-ui/cdk';
 import {ApiReferencesService, ApiRequestService, ReferencesNavigationService} from '@mnr-crm/client/services';
-import {forkJoin, map, Observable, takeUntil} from 'rxjs';
+import {filter, forkJoin, map, Observable, shareReplay, switchMap, takeUntil, tap} from 'rxjs';
 import {
     Buyer,
     PayType,
     Product,
     Provider,
+    ReferenceItem,
     ReferencesTypes,
-    User,
-    Vehicle,
-    Vendor,
     Request,
-    ReferenceItem
+    RequestStatus,
+    User, UserRole,
+    Vehicle,
+    Vendor
 } from '@mnr-crm/shared-models';
+import {payTypeMapper, requestStatusMapper} from '../../utils';
+import {ActivatedRoute} from '@angular/router';
+import {dateToTui} from '../../../../utils';
 
 
 @Component({
@@ -24,8 +35,11 @@ import {
     providers: [ReferencesNavigationService, TuiDestroyService],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RequestFormComponent {
+export class RequestFormComponent implements OnInit {
+    private requestId: string | undefined = undefined;
+
     readonly form = new FormGroup({
+        status: new FormControl<RequestStatus>(RequestStatus.Framed, [Validators.required]),
         responsible: new FormControl<ReferenceItem | null>(null, [Validators.required]),
         vendor: new FormControl<ReferenceItem | null>(null, [Validators.required]),
         buyer: new FormControl<ReferenceItem | null>(null, [Validators.required]),
@@ -37,39 +51,54 @@ export class RequestFormComponent {
         price: new FormControl<number | null>(null, [Validators.required]),
         payType: new FormControl<PayType | null>(null, [Validators.required]),
         density: new FormControl<number | null>(null, [Validators.required]),
+        temperature: new FormControl<number | null>(null, [Validators.required]),
         vehicle: new FormControl<ReferenceItem | null>(null),
         driver: new FormControl<ReferenceItem | null>(null),
         date: new FormControl<TuiDay | null>(TuiDay.currentLocal()),
     });
 
-    readonly payTypesReference: ReferenceItem[] = [
-        {
-            id: PayType.Cash.toString(),
-            label: 'Наличный'
-        },
-        {
-            id: PayType.Cashless.toString(),
-            label: 'Безналичный'
-        },
-    ];
+    readonly payTypesReference: ReferenceItem[] = Object.entries(payTypeMapper).map((p) => ({
+        id: p[0],
+        label: p[1],
+    }));
 
-    readonly references$: Observable<{[key in ReferencesTypes]: ReferenceItem[]}> = forkJoin([
+    readonly statusReference: ReferenceItem[] = Object.entries(requestStatusMapper).map((p) => ({
+        id: p[0],
+        label: p[1].label,
+    }));
+
+    readonly references$ = forkJoin([
         this.apiReference.getReference<Buyer[]>('buyers').pipe(map(x => x.map(k => ({id: k.id, label: k.name})))),
         this.apiReference.getReference<Product[]>('products').pipe(map(x => x.map(k => ({id: k.id, label: k.name})))),
         this.apiReference.getReference<Provider[]>('providers').pipe(map(x => x.map(k => ({id: k.id, label: k.name})))),
-        this.apiReference.getReference<User[]>('users').pipe(map(x => x.map(k => ({id: k.id, label: k.fio})))),
+        this.apiReference.getReference<User[]>('users').pipe(map(x => x.map(k => ({id: k.id, label: k.fio, role: k.role})))),
         this.apiReference.getReference<Vehicle[]>('vehicles').pipe(map(x => x.map(k => ({id: k.id, label: k.number})))),
         this.apiReference.getReference<Vendor[]>('vendors').pipe(map(x => x.map(k => ({id: k.id, label: k.name})))),
-    ]).pipe(map(([
-         buyers, products, providers, users, vehicles, vendors
-     ]) => ({ buyers, products, providers, users, vehicles, vendors })));
+    ]).pipe(
+        map(([buyers, products, providers, users, vehicles, vendors]) => ({
+            buyers,
+            products,
+            providers,
+            users,
+            vehicles,
+            vendors,
+            drivers: users.filter((u) => u.role === UserRole.Driver).map((d) => ({id: d.id, label: d.label})),
+            responsibles: users.filter((u) => u.role === UserRole.Admin).map((d) => ({id: d.id, label: d.label})),
+        })),
+        shareReplay({refCount: true, bufferSize: 1}),
+    );
 
     constructor(
+        private readonly route: ActivatedRoute,
         private readonly referencesNavigation: ReferencesNavigationService,
         private readonly apiReference: ApiReferencesService,
         private readonly apiRequest: ApiRequestService,
         private readonly destroy$: TuiDestroyService,
     ) {}
+
+    ngOnInit(): void {
+        this.setFormFromLoad();
+    }
 
     save(): void {
         if (!this.form.valid) {
@@ -91,10 +120,16 @@ export class RequestFormComponent {
             createdAt: new Date(),
         } as unknown as Request;
 
-        this.apiRequest.create(request).pipe(takeUntil(this.destroy$)).subscribe();
+        if (this.requestId) {
+            this.apiRequest.update(this.requestId, request).pipe(takeUntil(this.destroy$)).subscribe(() => this.back());
+
+            return;
+        }
+
+        this.apiRequest.create(request).pipe(takeUntil(this.destroy$)).subscribe(() => this.back());
     }
 
-    refStringify(item: {id: string | undefined, label: string}): string {
+    refStringify(item: {label: string}): string {
         return item.label;
     }
 
@@ -107,5 +142,40 @@ export class RequestFormComponent {
 
     back(): void {
         this.referencesNavigation.backToMain();
+    }
+
+    private setFormFromLoad(): void {
+        this.route.paramMap
+            .pipe(
+                map((params) => params.get('id')),
+                filter(tuiIsPresent),
+                filter(id => id !== 'new'),
+                tap((id) => this.requestId = id),
+                switchMap((id) => this.apiRequest.getById(id)),
+                switchMap((request) => this.references$.pipe(map((references) => ({
+                    request, references
+                })))),
+                takeUntil(this.destroy$)
+            )
+            .subscribe( ({request, references}) =>
+                this.form.setValue({
+                    status: request.status,
+                    responsible: references.users.find((u) => u.id === request.responsible) ?? null,
+                    vendor: references.vendors.find((u) => u.id === request.vendor) ?? null,
+                    buyer: references.buyers.find((u) => u.id === request.buyer) ?? null,
+                    address: request.address,
+                    phone: request.phone,
+                    product: references.products.find((p) => p.id === request.product) ?? null,
+                    count: request.count,
+                    weight: request.weight,
+                    price: request.price,
+                    payType: request.payType,
+                    density: request.density,
+                    temperature: request.temperature ?? null,
+                    vehicle: references.vehicles.find((v) => v.id === request.vehicle) ?? null,
+                    driver: references.users.find((u) => u.id === request.driver) ?? null,
+                    date: dateToTui(request.date)
+                })
+            )
     }
 }

@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {Document, Types} from 'mongoose';
-import {DEFAULT_SCHEMA_PARAMS} from './consts';
 import {PayType, Request, RequestStatus} from '@mnr-crm/shared-models';
 import {UserDto} from './user.schema';
 import {dbNameMapper} from '../utils/db-name.util';
@@ -9,10 +8,31 @@ import {BuyerDto} from './buyer.schema';
 import {ProductDto} from './product.schema';
 import {VehicleDto} from './vehicle.schema';
 
-@Schema(DEFAULT_SCHEMA_PARAMS)
+@Schema({
+    toObject: {
+        virtuals: true,
+        transform: (doc, ret) => {
+            delete ret._id;
+            delete ret.__v;
+            ret.cost = ret.price * ret.count;
+            ret.weight = ret.count * ret.density / 1000;
+            return ret;
+        },
+    },
+    toJSON: {
+        virtuals: true,
+        transform: (doc, ret) => {
+            delete ret._id;
+            delete ret.__v;
+            ret.cost = ret.price * ret.count;
+            ret.weight = ret.count * ret.density / 1000;
+            return ret;
+        },
+    },
+})
 export class RequestDto extends Document implements Request {
     @Prop()
-    autoId: number;
+    incId: number;
 
     @Prop({ type: Types.ObjectId, ref: dbNameMapper[UserDto.name] })
     responsible: string;
@@ -35,7 +55,7 @@ export class RequestDto extends Document implements Request {
     @Prop()
     count: number;
 
-    @Prop()
+    @Prop({get: (count: number, density: number) => count * density})
     weight: number;
 
     @Prop()
@@ -47,11 +67,17 @@ export class RequestDto extends Document implements Request {
     @Prop({type: String})
     payType: PayType;
 
-    @Prop({type: String})
+    @Prop({type: String, default: RequestStatus.Framed.toString()})
     status: RequestStatus;
 
     @Prop()
     density: number;
+
+    @Prop()
+    temperature: number;
+
+    @Prop()
+    plomb: string;
 
     @Prop({ type: Types.ObjectId, ref: dbNameMapper[VehicleDto.name] })
     vehicle: string;

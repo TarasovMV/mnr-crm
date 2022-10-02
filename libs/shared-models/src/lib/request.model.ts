@@ -13,7 +13,7 @@ export enum RequestStatus {
 
 export interface Request {
     id?: string;
-    autoId?: number;
+    incId?: number;
     responsible: string;
     vendor: string;
     buyer: string;
@@ -32,6 +32,8 @@ export interface Request {
     payType: PayType;
     status: RequestStatus;
     density: number;
+    temperature: number;
+    plomb: string;
     date: Date;
     createdAt: Date;
 }

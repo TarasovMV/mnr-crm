@@ -7,8 +7,8 @@ export class AppController {
     constructor(private readonly appService: AppService) {
     }
 
-    @Get()
-    getData() {
-        return this.appService.getData();
+    @Get('start')
+    check() {
+        return 'api start';
     }
 }

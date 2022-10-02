@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {ApiReferencesService, ReferencesNavigationService} from '@mnr-crm/client/services';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ReferencesNavigationService} from '@mnr-crm/client/services';
 import {ReferenceFormBase} from '@mnr-crm/client/classes';
 import {Product} from '@mnr-crm/shared-models';
-import {Observable} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {TuiDestroyService} from '@taiga-ui/cdk';
 
@@ -14,17 +13,13 @@ import {TuiDestroyService} from '@taiga-ui/cdk';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsFormComponent extends ReferenceFormBase<Product> {
+    protected readonly type = 'products';
+
     readonly form = new FormGroup({
         name: new FormControl('', [Validators.required]),
         shortName: new FormControl('', [Validators.required]),
         code: new FormControl('', [Validators.required]),
     });
 
-    constructor(private readonly apiReferences: ApiReferencesService) {
-        super();
-    }
-
-    protected override create(data: Product): Observable<Product> {
-        return this.apiReferences.createReferenceItem('products', data);
-    }
+    constructor() { super() }
 }

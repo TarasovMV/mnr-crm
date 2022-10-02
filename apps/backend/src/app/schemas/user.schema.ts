@@ -24,9 +24,6 @@ export class UserDto extends Document implements User {
     fio: string;
 
     @Prop()
-    job: string;
-
-    @Prop()
     phone: string;
 
     @Prop()

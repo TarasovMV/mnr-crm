@@ -14,7 +14,7 @@ import {Connection} from 'mongoose';
             useFactory: async (connection: Connection) => {
                 const schema = RequestSchema;
                 const AutoIncrement = AutoIncrementFactory(connection);
-                schema.plugin(AutoIncrement, {inc_field: 'autoId'});
+                schema.plugin(AutoIncrement, {inc_field: 'incId', start_seq: 6000});
                 return schema;
             },
             inject: [getConnectionToken()],

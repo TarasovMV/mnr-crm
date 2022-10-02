@@ -1,0 +1,187 @@
+<mnr-crm-back-nav
+    class="tui-space_bottom-8"
+    (click)="back()"
+></mnr-crm-back-nav>
+
+<form *tuiLet="references$ | async as references" [formGroup]="form">
+    <div class="tui-row tui-row_adaptive">
+        <div class="tui-col_lg-6 tui-col_md-8 tui-col_xs-12">
+            <h3 class="tui-form__header tui-form__header_margin-top_none">Заполните форму</h3>
+
+            <div class="tui-form__row">
+                <tui-combo-box
+                    [strict]="true"
+                    formControlName="company"
+                    [stringify]="refStringify"
+                >
+                    Компания
+                    <span class="tui-required"></span>
+                    <input tuiTextfield/>
+                    <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="references!.buyers | tuiFilterByInputWith: refStringify"
+                        [itemContent]="refStringify | tuiStringifyContent"
+                    ></tui-data-list-wrapper>
+                </tui-combo-box>
+                <tui-error
+                    formControlName="company"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__row">
+                <tui-combo-box
+                    [strict]="true"
+                    formControlName="fuel"
+                    [stringify]="refStringify"
+                >
+                    Топливо
+                    <span class="tui-required"></span>
+                    <input tuiTextfield/>
+                    <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="references!.products | tuiFilterByInputWith: refStringify"
+                        [itemContent]="refStringify | tuiStringifyContent"
+                    ></tui-data-list-wrapper>
+                </tui-combo-box>
+                <tui-error
+                    formControlName="fuel"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__row">
+                <tui-input-number
+                    formControlName="count"
+                    postfix="л"
+                    class="tui-space_top-2"
+                >
+                    Количество
+                    <input
+                        id="count"
+                        tuiTextfield
+                    />
+                </tui-input-number>
+                <tui-error
+                    formControlName="count"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__row">
+                <tui-input-number
+                    formControlName="temperature"
+                    class="tui-space_top-2"
+                >
+                    Температура
+                    <input
+                        id="temperature"
+                        tuiTextfield
+                    />
+                </tui-input-number>
+                <tui-error
+                    formControlName="temperature"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__row">
+                <tui-input-number
+                    formControlName="density"
+                    class="tui-space_top-2"
+                >
+                    Плотность
+                    <input
+                        id="density"
+                        tuiTextfield
+                    />
+                </tui-input-number>
+                <tui-error
+                    formControlName="density"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__row">
+                <tui-input-number
+                    formControlName="weight"
+                    postfix="т"
+                    class="tui-space_top-2"
+                >
+                    Вес
+                    <input
+                        id="weight"
+                        tuiTextfield
+                    />
+                </tui-input-number>
+                <tui-error
+                    formControlName="weight"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__row">
+                <tui-select
+                    class="tui-space_top-2"
+                    formControlName="type"
+                    [valueContent]="refStringifyArr(typeReference)"
+                >
+                    Выберите тип
+                    <span class="tui-required"></span>
+                    <ng-template tuiDataList>
+                        <tui-data-list>
+                            <button
+                                *ngFor="let item of typeReference"
+                                tuiOption
+                                [value]="item.id"
+                            >
+                                {{ item.label }}
+                            </button>
+                        </tui-data-list>
+                    </ng-template>
+                </tui-select>
+
+                <tui-error
+                    formControlName="type"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__row">
+                <tui-input-date
+                    tuiUnfinishedValidator="Finish filling the field"
+                    formControlName="date"
+                >
+                    Дата
+                </tui-input-date>
+                <tui-error
+                    formControlName="date"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__buttons">
+                <button
+                    tuiButton
+                    size="l"
+                    type="submit"
+                    class="tui-form__button"
+                    (click)="submit()"
+                >
+                    Подтвердить
+                </button>
+                <button
+                    tuiButton
+                    type="button"
+                    appearance="flat"
+                    size="l"
+                    class="tui-form__button"
+                    (click)="back()"
+                >
+                    Отмена
+                </button>
+            </div>
+
+        </div>
+    </div>
+</form>

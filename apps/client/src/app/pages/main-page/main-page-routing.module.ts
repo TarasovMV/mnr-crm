@@ -13,16 +13,16 @@ const routes: Routes = [
                 loadChildren: () => import('../dashboard-page/dashboard-page.module').then(m => m.DashboardPageModule),
             },
             {
+                path: 'incomes',
+                loadChildren: () => import('../incomes-page/incomes-page.module').then(m => m.IncomesPageModule),
+            },
+            {
                 path: 'reference/employers',
                 loadChildren: () => import('../reference-pages/users-page/users-page.module').then(m => m.UsersPageModule),
             },
             {
                 path: 'reference/buyers',
                 loadChildren: () => import('../reference-pages/buyers-page/buyers-page.module').then(m => m.BuyersPageModule),
-            },
-            {
-                path: 'reference/incomes',
-                loadChildren: () => import('../reference-pages/income-page/income-page.module').then(m => m.IncomePageModule),
             },
             {
                 path: 'reference/vendors',

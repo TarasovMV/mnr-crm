@@ -10,7 +10,7 @@
 
     <div class="legend">
         <div *ngFor="let item of legend" class="legend__item">
-            <div [class]="'circle circle_' + item.color"></div>
+            <div [class]="'circle color_' + item.color"></div>
             <div class="label">{{item.label}}</div>
         </div>
     </div>
@@ -19,33 +19,45 @@
 <table class="tui-table">
     <tbody>
     <tr class="tui-table__tr tui-table__tr_border_none">
-        <th class="tui-table__th tui-table__th_first">ID</th>
-        <th class="tui-table__th">Дата поставки</th>
-        <th class="tui-table__th">Дата создания</th>
+        <th class="tui-table__th tui-table__th_first">Номер ТТН</th>
         <th class="tui-table__th">Покупатель</th>
         <th class="tui-table__th">Продавец</th>
         <th class="tui-table__th">Водитель</th>
-        <th class="tui-table__th">Товар</th>
-        <th class="tui-table__th">Количество</th>
-        <th class="tui-table__th">Статус</th>
         <th class="tui-table__th">Ответственный</th>
+        <th class="tui-table__th">Товар</th>
+        <th class="tui-table__th">Объем</th>
+        <th class="tui-table__th">Плотность</th>
+        <th class="tui-table__th">Масса</th>
+        <th class="tui-table__th">Цена</th>
+        <th class="tui-table__th">Стоимость</th>
+        <th class="tui-table__th">Оплата</th>
         <th class="tui-table__th">Адрес доставки</th>
+        <th class="tui-table__th">Дата поставки</th>
+        <th class="tui-table__th">Дата создания</th>
         <th class="tui-table__th tui-table__th_last"></th>
     </tr>
     <tr *ngFor="let item of data$ | async" class="tui-table__tr tui-table__tr_border_none">
-        <td class="tui-table__td tui-table__td_first">{{item.autoId}}</td>
-        <td class="tui-table__td">{{item.date | date:"dd.MM.yyyy"}}</td>
-        <td class="tui-table__td">{{item.createdAt | date:"dd.MM.yyyy"}}</td>
+        <td class="tui-table__td tui-table__td_first">
+            <div [class]="'table-status color_' + statusStyleMapper[item.status]"></div>
+            {{item.incId}}
+        </td>
         <td class="tui-table__td">{{item.buyer}}</td>
         <td class="tui-table__td">{{item.vendor}}</td>
         <td class="tui-table__td">{{item.driver}}</td>
+        <td class="tui-table__td">{{item.responsible}}</td>
         <td class="tui-table__td">{{item.product}}</td>
         <td class="tui-table__td">{{item.count}}</td>
-        <td class="tui-table__td">{{item.status}}</td>
-        <td class="tui-table__td">{{item.responsible}}</td>
+        <td class="tui-table__td">{{item.density}}</td>
+        <td class="tui-table__td">{{item.weight}}</td>
+        <td class="tui-table__td">{{item.price}}</td>
+        <td class="tui-table__td">{{item.cost}}</td>
+        <td class="tui-table__td">{{item.payType | payTypeStringify}}</td>
         <td class="tui-table__td">{{item.address}}</td>
+        <td class="tui-table__td">{{item.date | date:"dd.MM.yyyy"}}</td>
+        <td class="tui-table__td">{{item.createdAt | date:"dd.MM.yyyy"}}</td>
         <td class="tui-table__td tui-table__td_last">
             <tui-hosted-dropdown
+                [(open)]="menu[item.id!]"
                 class="menu tui-space_right-1"
                 tuiDropdownAlign="left"
                 [content]="menuTpl"
@@ -66,8 +78,9 @@
 <ng-template #menuTpl>
     <tui-data-list>
         <button
-            *ngFor="let item of reqMenu(1)"
+            *ngFor="let item of context"
             tuiOption
+            (click)="item.action()"
         >
             {{item.label}}
         </button>

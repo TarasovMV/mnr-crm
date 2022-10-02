@@ -8,6 +8,32 @@
         <div class="tui-col_lg-6 tui-col_md-8 tui-col_xs-12">
             <h3 class="tui-form__header tui-form__header_margin-top_none">Заполните форму</h3>
             <div class="tui-form__row">
+                <tui-select
+                    class="tui-space_top-2"
+                    formControlName="status"
+                    [valueContent]="refStringifyArr(statusReference)"
+                >
+                    Выберите статус
+                    <span class="tui-required"></span>
+                    <ng-template tuiDataList>
+                        <tui-data-list>
+                            <button
+                                *ngFor="let item of statusReference"
+                                tuiOption
+                                [value]="item.id"
+                            >
+                                {{ item.label }}
+                            </button>
+                        </tui-data-list>
+                    </ng-template>
+                </tui-select>
+
+                <tui-error
+                    formControlName="payType"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+            <div class="tui-form__row">
                 <tui-combo-box
                     [strict]="true"
                     formControlName="responsible"
@@ -18,7 +44,7 @@
                     <input tuiTextfield/>
                     <tui-data-list-wrapper
                         *tuiDataList
-                        [items]="references!.users | tuiFilterByInputWith: refStringify"
+                        [items]="references!.responsibles | tuiFilterByInputWith: refStringify"
                         [itemContent]="refStringify | tuiStringifyContent"
                     ></tui-data-list-wrapper>
                 </tui-combo-box>
@@ -98,11 +124,10 @@
                     [stringify]="refStringify"
                 >
                     Водитель
-                    <span class="tui-required"></span>
                     <input tuiTextfield/>
                     <tui-data-list-wrapper
                         *tuiDataList
-                        [items]="references!.users | tuiFilterByInputWith: refStringify"
+                        [items]="references!.drivers | tuiFilterByInputWith: refStringify"
                         [itemContent]="refStringify | tuiStringifyContent"
                     ></tui-data-list-wrapper>
                 </tui-combo-box>
@@ -203,6 +228,24 @@
                 </tui-input-number>
                 <tui-error
                     formControlName="density"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__row">
+                <tui-input-number
+                    formControlName="temperature"
+                    class="tui-space_top-2"
+                >
+                    Температура
+                    <span class="tui-required"></span>
+                    <input
+                        id="temperature"
+                        tuiTextfield
+                    />
+                </tui-input-number>
+                <tui-error
+                    formControlName="temperature"
                     [error]="[] | tuiFieldError | async"
                 ></tui-error>
             </div>

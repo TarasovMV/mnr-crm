@@ -1,11 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { Income } from '@mnr-crm/shared-models';
+import {Document, Types} from 'mongoose';
+import {Income, IncomeType} from '@mnr-crm/shared-models';
 import {DEFAULT_SCHEMA_PARAMS} from './consts';
+import {dbNameMapper} from '../utils/db-name.util';
+import {BuyerDto} from './buyer.schema';
 
 @Schema(DEFAULT_SCHEMA_PARAMS)
 export class IncomeDto extends Document implements Income {
-    @Prop()
+    @Prop({ type: Types.ObjectId, ref: dbNameMapper[BuyerDto.name] })
     company: string;
 
     @Prop()
@@ -21,7 +23,10 @@ export class IncomeDto extends Document implements Income {
     temperature: number;
 
     @Prop()
-    type: string;
+    weight: number;
+
+    @Prop(({type: String, default: IncomeType.Income.toString()}))
+    type: IncomeType;
 
     @Prop()
     date: Date;
