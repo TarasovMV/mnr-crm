@@ -11,7 +11,7 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
     {
         title: 'Бизнес процессы',
-        image: '/img/undraw_docusaurus_mountain.svg',
+        image: '/docs/img/undraw_docusaurus_mountain.svg',
         description: (
             <>
                 Здесь будет находиться описание бизнес логики
@@ -21,7 +21,7 @@ const FeatureList: FeatureItem[] = [
     },
     {
         title: 'Техническая документация',
-        image: '/img/undraw_docusaurus_tree.svg',
+        image: '/docs/img/undraw_docusaurus_tree.svg',
         description: (
             <>
                 Здесь будет находиться описание стека технологий,
@@ -31,7 +31,7 @@ const FeatureList: FeatureItem[] = [
     },
     {
         title: 'Отслеживание прогресса',
-        image: '/img/undraw_docusaurus_react.svg',
+        image: '/docs/img/undraw_docusaurus_react.svg',
         description: (
             <>
                 Здесь можно посмотреть changelog проекта и узнать

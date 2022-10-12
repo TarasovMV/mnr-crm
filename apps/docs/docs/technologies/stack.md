@@ -8,5 +8,5 @@ sidebar_position: 1
 * Монорепозиторий - nx
 * Web-приложение - Angular 14
 * Backend-приложение - NestJS
-* База данных - MongoDB
+* База данных - MongoDB 4.4.6
 * Документация - Docosaurus
