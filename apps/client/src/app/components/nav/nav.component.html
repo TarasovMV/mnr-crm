@@ -13,7 +13,7 @@
         [content]="referencesTpl"
         [(open)]="isReferenceMenuOpen"
     >
-        <div class="nav" [class.nav__active]="(activeMenu$ | async) === 'reference'">
+        <div *ngIf="isReferencesAvailable" class="nav" [class.nav__active]="(activeMenu$ | async) === 'reference'">
             <div>Справочники</div>
             <tui-svg src="tuiIconChevronDown"></tui-svg>
         </div>

@@ -2,6 +2,8 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter, map, startWith} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
+import {UserService} from '@mnr-crm/client/services/user.service';
+import {UserRole} from '@mnr-crm/shared-models';
 
 
 @Component({
@@ -56,8 +58,13 @@ export class NavComponent {
             map(url => url.includes('dashboard') ? 'dashboard' : url.includes('incomes') ? 'incomes' : 'reference'),
         );
 
+    get isReferencesAvailable(): boolean {
+        return this.userService.checkRole([UserRole.Manager]);
+    }
+
     constructor(
         private readonly authService: AuthService,
+        private readonly userService: UserService,
         private readonly router: Router,
     ) {}
 

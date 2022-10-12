@@ -2,6 +2,7 @@
 
 <div class="row tui-space_bottom-8">
     <button
+        *ngIf="isCreateAvailable"
         tuiButton
         size="m"
         iconRight="tuiIconPlus"
@@ -77,12 +78,14 @@
 
 <ng-template #menuTpl>
     <tui-data-list>
-        <button
-            *ngFor="let item of context"
-            tuiOption
-            (click)="item.action()"
-        >
-            {{item.label}}
-        </button>
+        <ng-container *ngFor="let item of context">
+            <button
+                *ngIf="item.available"
+                tuiOption
+                (click)="item.action()"
+            >
+                {{item.label}}
+            </button>
+        </ng-container>
     </tui-data-list>
 </ng-template>
