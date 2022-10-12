@@ -64,7 +64,7 @@ export class RequestController {
         template.set('vendor', companyStringify(request.vendor as unknown as Vendor));
         template.set('vendor_okpo', (request.vendor as unknown as Vendor).okpo);
         template.set('buyer_okpo', (request.buyer as unknown as Buyer).okpo);
-        template.set('date_day', new Date(request.date).getDay() + 1);
+        template.set('date_day', new Date(request.date).getDate());
         template.set('date_month', new Date(request.date).getMonth() + 1);
         template.set('date_year', new Date(request.date).getFullYear());
         template.set('product_code', (request.product as unknown as Product).code);
@@ -82,7 +82,7 @@ export class RequestController {
 
         template.set('temperature', request.temperature);
         template.set('counter', COUNTER);
-        template.set('plomb', 'TODO');
+        template.set('plomb', request.plomb);
 
         const buffer = await template.toBuffer();
 

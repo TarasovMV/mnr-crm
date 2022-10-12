@@ -1,9 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {ApiRequestService, ReferencesNavigationService, RequestDataService} from '@mnr-crm/client/services'
-import {Buyer, Product, Request, RequestStatus, User, Vehicle, Vendor} from '@mnr-crm/shared-models';
+import {Buyer, Product, Request, RequestStatus, User, UserRole, Vehicle, Vendor} from '@mnr-crm/shared-models';
 import {forkJoin, map, merge, Observable, of, Subject, switchMap, takeUntil} from 'rxjs';
 import {TuiDestroyService} from '@taiga-ui/cdk';
 import {requestStatusMapper} from './utils';
+import {UserService} from '@mnr-crm/client/services/user.service';
+import {checkRoleUtil} from '../../utils';
 
 
 @Component({
@@ -21,33 +23,40 @@ export class DashboardPageComponent {
             this.apiRequest.getAll(),
             this.requestDataService.getReferences(),
         ]).pipe(map(([requests, references]) => {
-            return requests.map(r => ({
-                ...r,
-                responsible: this.handleReferenceItemById<User>(references.users, r.responsible as string, (x) => x.fio),
-                vendor: this.handleReferenceItemById<Vendor>(references.vendors, r.vendor, (x) => x.name),
-                buyer: this.handleReferenceItemById<Buyer>(references.buyers, r.buyer, (x) => x.name),
-                vehicle: this.handleReferenceItemById<Vehicle>(references.vehicles, r.vehicle, (x) => x.number),
-                driver: this.handleReferenceItemById<User>(references.users, r.driver, (x) => x.fio),
-                product: this.handleReferenceItemById<Product>(references.products, r.product, (x) => x.shortName),
-            })).sort((cur, next) => new Date(next.createdAt).getTime() - new Date(cur.createdAt).getTime())
+            return requests
+                .map(r => ({
+                    ...r,
+                    responsible: this.handleReferenceItemById<User>(references.users, r.responsible as string, (x) => x.fio),
+                    vendor: this.handleReferenceItemById<Vendor>(references.vendors, r.vendor, (x) => x.name),
+                    buyer: this.handleReferenceItemById<Buyer>(references.buyers, r.buyer, (x) => x.name),
+                    vehicle: this.handleReferenceItemById<Vehicle>(references.vehicles, r.vehicle, (x) => x.number),
+                    driver: this.handleReferenceItemById<User>(references.users, r.driver, (x) => x.fio),
+                    product: this.handleReferenceItemById<Product>(references.products, r.product, (x) => x.shortName),
+                }))
+                .filter(request => this.filterRequests(this.userService.user, request))
+                .sort((cur, next) => new Date(next.createdAt).getTime() - new Date(cur.createdAt).getTime())
         }))
     ));
 
     readonly context = [
         {
             label: 'Редактировать',
+            available: true,
             action: () => this.menuActionWrapper(this.edit.bind(this)),
         },
         {
             label: 'Дублировать',
+            available: this.userService.checkRole([UserRole.Manager]),
             action: () => this.menuActionWrapper(this.copy.bind(this)),
         },
         {
             label: 'Сформировать ТТН',
+            available: true,
             action: () => this.menuActionWrapper(this.createTTN.bind(this)),
         },
         {
             label: 'Удалить',
+            available: this.userService.checkRole([UserRole.Manager]),
             action: () => this.menuActionWrapper(this.delete.bind(this)),
         }
     ];
@@ -61,10 +70,15 @@ export class DashboardPageComponent {
             ({...acc, [next[0]]: next[1].color}), {}
         ) as {[key in RequestStatus]: string};
 
+    get isCreateAvailable(): boolean {
+        return this.userService.checkRole([UserRole.Manager]);
+    }
+
     constructor(
+        private readonly userService: UserService,
         private readonly referencesNavigation: ReferencesNavigationService,
-        private readonly apiRequest: ApiRequestService,
         private readonly requestDataService: RequestDataService,
+        private readonly apiRequest: ApiRequestService,
         private readonly destroy$: TuiDestroyService,
     ) {}
 
@@ -114,5 +128,43 @@ export class DashboardPageComponent {
         }
 
         return callback(item);
+    }
+
+    private filterRequests(user: User | null, request: Request): boolean {
+        if (!user) {
+            return false;
+        }
+
+        if (checkRoleUtil(user, [UserRole.Manager], false) && request.responsible !== user.id) {
+            return false;
+        }
+
+        if (checkRoleUtil(user, [UserRole.Driver], false) && request.driver !== user.id) {
+            return false;
+        }
+
+        if (request.status === RequestStatus.Framed && checkRoleUtil(user, [UserRole.Manager, UserRole.Logistician])) {
+            return true;
+        }
+
+        if (
+            (
+                request.status === RequestStatus.Appointed ||
+                request.status === RequestStatus.InTransit
+            ) &&
+            checkRoleUtil(user, [UserRole.Manager, UserRole.Logistician, UserRole.Storekeeper, UserRole.Driver])
+        ) {
+            return true;
+        }
+
+        if (request.status === RequestStatus.Executed && checkRoleUtil(user, [UserRole.Manager, UserRole.Logistician])) {
+            return true;
+        }
+
+        if (request.status === RequestStatus.Canceled && checkRoleUtil(user, [UserRole.Manager])) {
+            return true;
+        }
+
+        return false;
     }
 }

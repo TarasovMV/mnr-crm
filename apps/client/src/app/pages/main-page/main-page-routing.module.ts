@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MainPageComponent} from './main-page.component';
+import {ReferencesGuard} from '../../guards/references.guard';
 
 
 const routes: Routes = [
@@ -19,26 +20,32 @@ const routes: Routes = [
             {
                 path: 'reference/employers',
                 loadChildren: () => import('../reference-pages/users-page/users-page.module').then(m => m.UsersPageModule),
+                canActivate: [ReferencesGuard]
             },
             {
                 path: 'reference/buyers',
                 loadChildren: () => import('../reference-pages/buyers-page/buyers-page.module').then(m => m.BuyersPageModule),
+                canActivate: [ReferencesGuard]
             },
             {
                 path: 'reference/vendors',
                 loadChildren: () => import('../reference-pages/vendors-page/vendors-page.module').then(m => m.VendorsPageModule),
+                canActivate: [ReferencesGuard]
             },
             {
                 path: 'reference/providers',
                 loadChildren: () => import('../reference-pages/providers-page/providers-page.module').then(m => m.ProvidersPageModule),
+                canActivate: [ReferencesGuard]
             },
             {
                 path: 'reference/vehicles',
                 loadChildren: () => import('../reference-pages/vehicles-page/vehicles-page.module').then(m => m.VehiclesPageModule),
+                canActivate: [ReferencesGuard]
             },
             {
                 path: 'reference/products',
                 loadChildren: () => import('../reference-pages/products-page/products-page.module').then(m => m.ProductsPageModule),
+                canActivate: [ReferencesGuard]
             },
             {
                 path: '**',
