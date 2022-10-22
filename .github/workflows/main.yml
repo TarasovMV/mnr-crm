@@ -12,6 +12,6 @@ jobs:
       
     steps:
       - name: Print Hello message
-      - run : echo "Hello world from test job"
+        run: echo "Hello world from test job"
       
 
