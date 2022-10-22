@@ -11,7 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print Hello message
-        run: echo "Hello world from test job"
+      - name: Checkout
+        run : actions/checkout@v3
+
+      - name: Install
+        run : npm ci --legacy-peer-deps
 
 
