@@ -1,0 +1,17 @@
+name: Check-affected
+
+on:
+  push:
+    branches:
+      - master
+      
+jobs:
+  test:
+    
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Print Hello message
+      - run : echo "Hello world from test job"
+      
+
