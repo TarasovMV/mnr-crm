@@ -52,3 +52,11 @@ docker network create -d bridge mnr-crm-net
 - sudo systemctl reload nginx
 - sudo systemctl start nginx
 - sudo systemctl status nginx
+
+### CRON
+
+- crontab -l
+- crontab -e
+
+### NX
+nx print-affected --type=app --select=projects
