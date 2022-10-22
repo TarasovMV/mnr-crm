@@ -7,7 +7,8 @@
         size="m"
         iconRight="tuiIconPlus"
         (click)="createRequest()"
-    >Создать заявку</button>
+    >Создать заявку
+    </button>
 
     <div class="legend">
         <div *ngFor="let item of legend" class="legend__item">
@@ -17,7 +18,61 @@
     </div>
 </div>
 
-<table class="tui-table">
+<ng-container *ngIf="isMobile">
+    <mnr-crm-item-card *ngFor="let item of data$ | async">
+        <tui-hosted-dropdown
+            [(open)]="menu[item.id!]"
+            class="item-card-menu"
+            tuiDropdownAlign="left"
+            [content]="menuTpl"
+        >
+            <button
+                tuiIconButton
+                icon="tuiIconMoreVer"
+                shape="rounded"
+                appearance="icon"
+                size="xs"
+            ></button>
+        </tui-hosted-dropdown>
+
+        <mnr-crm-item-card-prop
+            label="Покупатель"
+            [description]="item.buyer"
+        ></mnr-crm-item-card-prop>
+
+        <mnr-crm-item-card-prop
+            label="Продавец"
+            [description]="item.vendor"
+        ></mnr-crm-item-card-prop>
+
+        <mnr-crm-item-card-prop
+            label="Товар"
+            [description]="item.product"
+        ></mnr-crm-item-card-prop>
+
+        <mnr-crm-item-card-prop
+            label="Объем"
+            [description]="item.count"
+        ></mnr-crm-item-card-prop>
+
+        <mnr-crm-item-card-prop
+            label="Оплата"
+            [description]="item.payType | payTypeStringify"
+        ></mnr-crm-item-card-prop>
+
+        <mnr-crm-item-card-prop
+            label="Адрес"
+            [description]="item.address"
+        ></mnr-crm-item-card-prop>
+
+        <mnr-crm-item-card-prop
+            label="Телефон"
+            [description]="item.phone"
+        ></mnr-crm-item-card-prop>
+    </mnr-crm-item-card>
+</ng-container>
+
+<table *ngIf="!isMobile" class="tui-table">
     <tbody>
     <tr class="tui-table__tr tui-table__tr_border_none">
         <th class="tui-table__th tui-table__th_first">Номер ТТН</th>

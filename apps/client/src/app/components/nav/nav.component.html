@@ -4,7 +4,7 @@
     <div class="nav" [class.nav__active]="(activeMenu$ | async) === 'dashboard'" (click)="goToPage('dashboard')">
         <div>Заявки</div>
     </div>
-    <div class="nav" [class.nav__active]="(activeMenu$ | async) === 'incomes'" (click)="goToPage('incomes')">
+    <div *ngIf="isIncomeAvailable" class="nav" [class.nav__active]="(activeMenu$ | async) === 'incomes'" (click)="goToPage('incomes')">
         <div>Приходы</div>
     </div>
     <tui-hosted-dropdown

@@ -10,21 +10,38 @@
 
             <div class="tui-form__row">
                 <tui-combo-box
-                    [strict]="true"
+                    [strict]="false"
                     formControlName="company"
-                    [stringify]="refStringify"
                 >
                     Компания
                     <span class="tui-required"></span>
                     <input tuiTextfield/>
                     <tui-data-list-wrapper
                         *tuiDataList
-                        [items]="references!.buyers | tuiFilterByInputWith: refStringify"
-                        [itemContent]="refStringify | tuiStringifyContent"
+                        [items]="references!.buyers | tuiFilterByInput"
                     ></tui-data-list-wrapper>
                 </tui-combo-box>
                 <tui-error
                     formControlName="company"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__row">
+                <tui-combo-box
+                    [strict]="false"
+                    [formControl]="form.controls.driver"
+                >
+                    Водитель
+                    <span class="tui-required"></span>
+                    <input tuiTextfield/>
+                    <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="references!.users | tuiFilterByInput"
+                    ></tui-data-list-wrapper>
+                </tui-combo-box>
+                <tui-error
+                    formControlName="driver"
                     [error]="[] | tuiFieldError | async"
                 ></tui-error>
             </div>

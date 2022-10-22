@@ -1,9 +1,21 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
-import {ApiReferencesService, ReferencesNavigationService} from '@mnr-crm/client/services';
-import {TUI_IS_MOBILE, TuiDestroyService} from '@taiga-ui/cdk';
-import {forkJoin, map, merge, Observable, of, Subject, switchMap, takeUntil} from 'rxjs';
-import {Buyer, Income, Product} from '@mnr-crm/shared-models';
-import {ApiIncomesService} from '@mnr-crm/client/services/api/api-incomes.service';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import {
+    ApiReferencesService,
+    ReferencesNavigationService,
+} from '@mnr-crm/client/services';
+import { TUI_IS_MOBILE, TuiDestroyService } from '@taiga-ui/cdk';
+import {
+    forkJoin,
+    map,
+    merge,
+    Observable,
+    of,
+    Subject,
+    switchMap,
+    takeUntil,
+} from 'rxjs';
+import { Buyer, Income, Product } from '@mnr-crm/shared-models';
+import { ApiIncomesService } from '@mnr-crm/client/services/api/api-incomes.service';
 
 @Component({
     selector: 'mnr-crm-incomes-page',
@@ -15,19 +27,27 @@ import {ApiIncomesService} from '@mnr-crm/client/services/api/api-incomes.servic
 export class IncomesPageComponent {
     private readonly refresh$ = new Subject<void>();
 
-    readonly data$: Observable<Income[]> = merge(of(null), this.refresh$).pipe(switchMap(() =>
-        forkJoin([
-            this.apiIncomes.getAll(),
-            this.apiReferences.getReference<Buyer[]>('buyers'),
-            this.apiReferences.getReference<Product[]>('products'),
-        ]).pipe(map(([incomes, buyers, products]) => incomes.map((i) => ({
-            ...i,
-            company: this.handleReferenceItemById(buyers, i.company, (x) => x.name),
-            fuel: this.handleReferenceItemById(products, i.fuel, (x) => x.name),
-        }))))
-    ));
+    readonly data$: Observable<Income[]> = merge(of(null), this.refresh$).pipe(
+        switchMap(() =>
+            forkJoin([
+                this.apiIncomes.getAll(),
+                this.apiReferences.getReference<Product[]>('products'),
+            ]).pipe(
+                map(([incomes, products]) =>
+                    incomes.map((i) => ({
+                        ...i,
+                        fuel: this.handleReferenceItemById(
+                            products,
+                            i.fuel,
+                            (x) => x.name
+                        ),
+                    }))
+                )
+            )
+        )
+    );
 
-    readonly menu: {[key: string]: boolean} = {};
+    readonly menu: { [key: string]: boolean } = {};
 
     readonly context = [
         {
@@ -37,7 +57,7 @@ export class IncomesPageComponent {
         {
             label: 'Удалить',
             action: () => this.menuActionWrapper(this.delete.bind(this)),
-        }
+        },
     ];
 
     constructor(
@@ -46,7 +66,7 @@ export class IncomesPageComponent {
         private readonly referencesNavigation: ReferencesNavigationService,
         private readonly apiReferences: ApiReferencesService,
         private readonly apiIncomes: ApiIncomesService,
-        private readonly destroy$: TuiDestroyService,
+        private readonly destroy$: TuiDestroyService
     ) {}
 
     create(): void {
@@ -58,12 +78,15 @@ export class IncomesPageComponent {
     }
 
     private delete(id: string): void {
-        this.apiIncomes.deleteById(id).pipe(takeUntil(this.destroy$)).subscribe(() => this.refresh$.next());
+        this.apiIncomes
+            .deleteById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.refresh$.next());
     }
 
     // TODO: shared
     private menuActionWrapper(action: (id: string) => void) {
-        const id = Object.entries(this.menu).find(m => m[1])?.[0];
+        const id = Object.entries(this.menu).find((m) => m[1])?.[0];
 
         if (!id) {
             throw new Error('Item not found');
@@ -75,8 +98,12 @@ export class IncomesPageComponent {
     }
 
     // TODO: shared
-    private handleReferenceItemById<T extends {id?: string}>(reference: T[], id: string, callback: (x: T) => string): string {
-        const item = reference.find(r => r.id === id);
+    private handleReferenceItemById<T extends { id?: string }>(
+        reference: T[],
+        id: string,
+        callback: (x: T) => string
+    ): string {
+        const item = reference.find((r) => r.id === id);
 
         if (!item) {
             return '';

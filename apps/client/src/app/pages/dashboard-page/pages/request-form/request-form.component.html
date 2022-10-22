@@ -242,6 +242,19 @@
                 ></tui-error>
             </div>
 
+
+            <div *ngIf="displayedControls.plomb" class="tui-form__row">
+                <tui-input
+                    formControlName="plomb"
+                >
+                    Пломба
+                </tui-input>
+                <tui-error
+                    formControlName="plomb"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
             <div *ngIf="displayedControls.payType" class="tui-form__row">
                 <tui-select
                     class="tui-space_top-2"

@@ -45,7 +45,6 @@
         "bcrypt": "^5.0.1",
         "clsx": "^1.1.1",
         "exceljs": "^4.3.0",
-        "js-excel-template": "^3.0.1",
         "mongoose": "^6.5.4",
         "mongoose-auto-increment": "^5.0.1",
         "mongoose-sequence": "^5.3.1",

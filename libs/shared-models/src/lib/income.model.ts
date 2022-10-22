@@ -8,6 +8,7 @@ export enum IncomeType {
 export interface Income {
     id?: string;
     company: string;
+    driver: string;
     fuel: string;
     count: number;
     density: number;
