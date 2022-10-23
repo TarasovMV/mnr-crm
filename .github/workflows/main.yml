@@ -6,13 +6,36 @@ on:
       - main
 
 jobs:
-  test:
+  install:
 
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Install
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install
         run : npm ci --legacy-peer-deps
+      - name: save artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: install-artifact
+          path: /
+          retention-days: 1
+
+  front-build:
+
+    runs-on: ubuntu-latest
+    needs: install
+
+    steps:
+      - name: load artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: install-artifact
+          path: /
+      - name: get affected
+        run : nx print-affected --type=app --select=projects
+
+
 
 
