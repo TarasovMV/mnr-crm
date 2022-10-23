@@ -16,7 +16,7 @@ jobs:
       - name: install
         run: npm ci --legacy-peer-deps
       - name: get affected
-        run: npm run affected
+        run: npm run test:ci
       - name: caching
         id: cache-node-modules
         uses: actions/cache@v3
