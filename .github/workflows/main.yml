@@ -19,7 +19,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: install-artifact
-          path: /
+          path: /path/mnr/artifacts/
           retention-days: 1
 
   front-build:
