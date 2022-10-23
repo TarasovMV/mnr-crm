@@ -9,7 +9,7 @@
         "build": "nx build",
         "test": "nx test",
         "affected": "nx print-affected --type=app --select=projects",
-        "test:ci": "npx nx affected:test"
+        "test:ci": "npx nx affected:test --base=main --head=HEAD~1"
     },
     "private": true,
     "dependencies": {
