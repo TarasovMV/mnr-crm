@@ -8,7 +8,7 @@
         "start": "nx serve",
         "build": "nx build",
         "test": "nx test",
-        "affected": "nx print-affected --type=app --select=projects --base=HEAD~1"
+        "affected": "nx print-affected --type=app --select=projects --base=main~1"
     },
     "private": true,
     "dependencies": {
