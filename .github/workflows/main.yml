@@ -38,7 +38,7 @@ jobs:
           path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
       - name: get affected
-        run: nx print-affected --type=app --select=projects
+        run: npm run nx print-affected --type=app --select=projects
 
 
 
