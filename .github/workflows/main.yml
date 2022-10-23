@@ -14,27 +14,31 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: install
-        run : npm ci --legacy-peer-deps
-      - name: save artifacts
-        uses: actions/upload-artifact@v3
+        run: npm ci --legacy-peer-deps
+      - name: caching
+        id: cache-node-modules
+        uses: actions/cache@v3
         with:
-          name: install-artifact
-          path: /path/mnr/artifacts/
-          retention-days: 1
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
 
-  front-build:
+
+  affected:
 
     runs-on: ubuntu-latest
     needs: install
 
     steps:
-      - name: load artifacts
-        uses: actions/download-artifact@v3
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: restore cache
+        id: cache-node-modules
+        uses: actions/cache@v3
         with:
-          name: install-artifact
-          path: /
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
       - name: get affected
-        run : nx print-affected --type=app --select=projects
+        run: nx print-affected --type=app --select=projects
 
 
 
