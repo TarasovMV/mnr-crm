@@ -22,6 +22,13 @@ import { ItemCardModule } from '@mnr-crm/client/components/item-card/item-card.m
                 pathMatch: 'full',
             },
             {
+                path: ':id/chat',
+                loadChildren: () =>
+                    import('./pages/chat-page/chat-page.module').then(
+                        (m) => m.ChatPageModule
+                    ),
+            },
+            {
                 path: ':id',
                 loadChildren: () =>
                     import('./pages/request-form/request-form.module').then(

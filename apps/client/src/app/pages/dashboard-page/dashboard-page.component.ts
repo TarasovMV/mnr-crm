@@ -28,6 +28,7 @@ import { TUI_IS_MOBILE, TuiDestroyService } from '@taiga-ui/cdk';
 import { requestStatusMapper } from './utils';
 import { UserService } from '@mnr-crm/client/services/user.service';
 import { checkRoleUtil } from '../../utils';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'mnr-crm-dashboard-page',
@@ -100,6 +101,11 @@ export class DashboardPageComponent {
             action: () => this.menuActionWrapper(this.edit.bind(this)),
         },
         {
+            label: 'Чат',
+            available: true,
+            action: () => this.menuActionWrapper(this.openChat.bind(this)),
+        },
+        {
             label: 'Дублировать',
             available: this.userService.checkRole([UserRole.Manager]),
             action: () => this.menuActionWrapper(this.copy.bind(this)),
@@ -134,6 +140,8 @@ export class DashboardPageComponent {
     constructor(
         @Inject(TUI_IS_MOBILE) readonly isMobile: boolean,
         private readonly userService: UserService,
+        private readonly router: Router,
+        private readonly route: ActivatedRoute,
         private readonly referencesNavigation: ReferencesNavigationService,
         private readonly requestDataService: RequestDataService,
         private readonly apiRequest: ApiRequestService,
@@ -146,6 +154,10 @@ export class DashboardPageComponent {
 
     edit(id: string): void {
         this.referencesNavigation.editRedirect(id);
+    }
+
+    private openChat(id: string): void {
+        this.router.navigate([id, 'chat'], { relativeTo: this.route });
     }
 
     private createTTN(id: string): void {

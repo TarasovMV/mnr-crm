@@ -1,0 +1,38 @@
+<mnr-crm-back-nav (click)="back()"></mnr-crm-back-nav>
+
+<div id="message-scroll-container" class="messages">
+    <mnr-crm-chat-message
+        *ngFor="let message of messages$ | async; trackBy: $any(trackById)"
+        [type]="message.type"
+        [imgSrc]="message.imgSrc"
+        [text]="message.text"
+        [timestamp]="message.timestamp"
+    ></mnr-crm-chat-message>
+</div>
+<form [formGroup]="form" class="input" (submit)="submit($event)">
+    <tui-text-area
+        formControlName="message"
+        tuiTextfieldSize="m"
+        [rows]="isMobile ? 4 : 18"
+        [expandable]="true"
+        [tuiTextfieldLabelOutside]="true"
+    ></tui-text-area>
+
+    <button
+        (click)="fileUpload()"
+        tuiIconButton
+        appearance="secondary"
+        shape="rounded"
+        icon="tuiIconLink"
+        size="m"
+    >
+        <input id="file-upload" accept="image/*" type="file" (change)="fileSubmit($event)">
+    </button>
+    <button
+        type="submit"
+        tuiIconButton
+        shape="rounded"
+        icon="tuiIconSubitem"
+        size="m"
+    ></button>
+</form>

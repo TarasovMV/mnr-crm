@@ -1,0 +1,38 @@
+:host {
+    width: 100%;
+}
+
+.message {
+    max-width: 80%;
+    width: max-content;
+    padding: 1rem;
+    border-radius: var(--tui-radius-m);
+    box-sizing: border-box;
+
+    &__self {
+        margin-left: auto;
+        background: var(--tui-primary);
+        color: var(--tui-base-01);
+    }
+
+    &__other {
+        background: var(--tui-secondary);
+    }
+}
+
+.author {
+    margin-bottom: .5rem;
+    font-weight: bold;
+}
+
+.timestamp {
+    margin-top: 0.5rem;
+    text-align: right;
+    font-weight: lighter;
+}
+
+img {
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: var(--tui-radius-m);
+}

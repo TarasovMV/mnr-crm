@@ -8,6 +8,7 @@
         "start": "nx serve",
         "build": "nx build",
         "test": "nx test",
+        "back:start": "npm run start backend -- --args=\"DB_URL=mongodb://dbReadWrite:1475963Maxim\\!@5.180.136.114:27017/mnr-crm\"",
         "affected": "nx print-affected --type=app --select=projects",
         "test:ci": "npx nx affected:test --base=main~1"
     },

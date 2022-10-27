@@ -7,3 +7,4 @@ export * from './lib/request.model';
 export * from './lib/user.model';
 export * from './lib/vehicle.model';
 export * from './lib/vendor.model';
+export * from './lib/message.model';

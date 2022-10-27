@@ -1,0 +1,10 @@
+<div [class]="rootClass">
+    <div *ngIf="author" class="author">{{ author }}</div>
+    <ng-container *ngIf="type === 'TEXT'">
+        {{text}}
+    </ng-container>
+    <ng-container *ngIf="type === 'IMAGE'">
+        <img src="{{imgSrc}}"/>
+    </ng-container>
+    <div class="timestamp">{{ timestamp | date: 'HH:mm dd.MM.yyyy' }}</div>
+</div>
