@@ -66,68 +66,76 @@
         ></mnr-crm-item-card-prop>
 
         <mnr-crm-item-card-prop
+            *ngIf="item.phone"
             label="Телефон"
-            [description]="item.phone"
+            description="<a href='tel:{{item.phone}}'>{{item.phone}}</a>"
+        ></mnr-crm-item-card-prop>
+
+        <mnr-crm-item-card-prop
+            label="Дата поставки"
+            [description]="item.date | date:'dd.MM.yyyy'"
         ></mnr-crm-item-card-prop>
     </mnr-crm-item-card>
 </ng-container>
 
-<table *ngIf="!isMobile" class="tui-table">
-    <tbody>
-    <tr class="tui-table__tr tui-table__tr_border_none">
-        <th class="tui-table__th tui-table__th_first">Номер ТТН</th>
-        <th class="tui-table__th">Покупатель</th>
-        <th class="tui-table__th">Продавец</th>
-        <th class="tui-table__th">Водитель</th>
-        <th class="tui-table__th">Ответственный</th>
-        <th class="tui-table__th">Товар</th>
-        <th class="tui-table__th">Объем</th>
-        <th class="tui-table__th">Плотность</th>
-        <th class="tui-table__th">Масса</th>
-        <th class="tui-table__th">Цена</th>
-        <th class="tui-table__th">Стоимость</th>
-        <th class="tui-table__th">Оплата</th>
-        <th class="tui-table__th">Адрес доставки</th>
-        <th class="tui-table__th">Дата поставки</th>
-        <th class="tui-table__th">Дата создания</th>
-        <th class="tui-table__th tui-table__th_last"></th>
-    </tr>
-    <tr *ngFor="let item of data$ | async" class="tui-table__tr tui-table__tr_border_none">
-        <td class="tui-table__td tui-table__td_first">
-            <div [class]="'table-status color_' + statusStyleMapper[item.status]"></div>
-            {{item.incId}}
-        </td>
-        <td class="tui-table__td">{{item.buyer}}</td>
-        <td class="tui-table__td">{{item.vendor}}</td>
-        <td class="tui-table__td">{{item.driver}}</td>
-        <td class="tui-table__td">{{item.responsible}}</td>
-        <td class="tui-table__td">{{item.product}}</td>
-        <td class="tui-table__td">{{item.count}}</td>
-        <td class="tui-table__td">{{item.density}}</td>
-        <td class="tui-table__td">{{item.weight}}</td>
-        <td class="tui-table__td">{{item.price}}</td>
-        <td class="tui-table__td">{{item.cost}}</td>
-        <td class="tui-table__td">{{item.payType | payTypeStringify}}</td>
-        <td class="tui-table__td">{{item.address}}</td>
-        <td class="tui-table__td">{{item.date | date:"dd.MM.yyyy"}}</td>
-        <td class="tui-table__td">{{item.createdAt | date:"dd.MM.yyyy"}}</td>
-        <td class="tui-table__td tui-table__td_last">
-            <tui-hosted-dropdown
-                [(open)]="menu[item.id!]"
-                class="menu tui-space_right-1"
-                tuiDropdownAlign="left"
-                [content]="menuTpl"
-            >
-                <button
-                    tuiIconButton
-                    icon="tuiIconMoreVer"
-                    shape="rounded"
-                    appearance="icon"
-                    size="xs"
-                ></button>
-            </tui-hosted-dropdown>
-        </td>
-    </tr>
+<table *ngIf="!isMobile" tuiTable [columns]="columns" class="tui-table">
+    <thead>
+        <tr tuiThGroup class="tui-table__tr tui-table__tr_border_none">
+            <th *tuiHead="'incId'" tuiTh class="tui-table__th tui-table__th_first">Номер ТТН</th>
+            <th [sorter]="null" *tuiHead="'buyer'" tuiTh class="tui-table__th">Покупатель</th>
+            <th [sorter]="null" *tuiHead="'vendor'" tuiTh class="tui-table__th">Продавец</th>
+            <th [sorter]="null" *tuiHead="'driver'" tuiTh class="tui-table__th">Водитель</th>
+            <th [sorter]="null" *tuiHead="'responsible'" tuiTh class="tui-table__th">Ответственный</th>
+            <th [sorter]="null" *tuiHead="'product'" tuiTh class="tui-table__th">Товар</th>
+            <th *tuiHead="'count'" tuiTh class="tui-table__th">Объем</th>
+            <th *tuiHead="'density'" tuiTh class="tui-table__th">Плотность</th>
+            <th *tuiHead="'weight'" tuiTh class="tui-table__th">Масса</th>
+            <th *tuiHead="'price'" tuiTh class="tui-table__th">Цена</th>
+            <th *tuiHead="'cost'" tuiTh class="tui-table__th">Стоимость</th>
+            <th [sorter]="null" *tuiHead="'payType'" tuiTh class="tui-table__th">Оплата</th>
+            <th [sorter]="null" *tuiHead="'address'" tuiTh class="tui-table__th">Адрес доставки</th>
+            <th *tuiHead="'date'" tuiTh class="tui-table__th">Дата поставки</th>
+            <th *tuiHead="'createdAt'" tuiTh class="tui-table__th">Дата создания</th>
+            <th [sorter]="null" *tuiHead="'empty'" tuiTh class="tui-table__th tui-table__th_last"></th>
+        </tr>
+    </thead>
+    <tbody *ngIf="(data$ | async | tuiTableSort | tuiMapper: dataTyping) as data" tuiTbody [data]="data">
+        <tr *ngFor="let item of data" tuiTr class="tui-table__tr tui-table__tr_border_none">
+            <td *tuiCell="'incId'" tuiTd class="tui-table__td tui-table__td_first">
+                <div [class]="'table-status color_' + statusStyleMapper[item.status]"></div>
+                {{item.incId}}
+            </td>
+            <td *tuiCell="'buyer'" tuiTd class="tui-table__td">{{item.buyer}}</td>
+            <td *tuiCell="'vendor'" tuiTd class="tui-table__td">{{item.vendor}}</td>
+            <td *tuiCell="'driver'" tuiTd class="tui-table__td">{{item.driver}}</td>
+            <td *tuiCell="'responsible'" tuiTd class="tui-table__td">{{item.responsible}}</td>
+            <td *tuiCell="'product'" tuiTd class="tui-table__td">{{item.product}}</td>
+            <td *tuiCell="'count'" tuiTd class="tui-table__td">{{item.count}}</td>
+            <td *tuiCell="'density'" tuiTd class="tui-table__td">{{item.density}}</td>
+            <td *tuiCell="'weight'" tuiTd class="tui-table__td">{{item.weight}}</td>
+            <td *tuiCell="'price'" tuiTd class="tui-table__td">{{item.price}}</td>
+            <td *tuiCell="'cost'" tuiTd class="tui-table__td">{{item.cost}}</td>
+            <td *tuiCell="'payType'" tuiTd class="tui-table__td">{{item.payType | payTypeStringify}}</td>
+            <td *tuiCell="'address'" tuiTd class="tui-table__td">{{item.address}}</td>
+            <td *tuiCell="'date'" tuiTd class="tui-table__td">{{item.date | date:"dd.MM.yyyy"}}</td>
+            <td *tuiCell="'createdAt'" tuiTd class="tui-table__td">{{item.createdAt | date:"dd.MM.yyyy"}}</td>
+            <td *tuiCell="'empty'" tuiTd class="tui-table__td tui-table__td_last">
+                <tui-hosted-dropdown
+                    [(open)]="menu[item.id!]"
+                    class="menu tui-space_right-1"
+                    tuiDropdownAlign="left"
+                    [content]="menuTpl"
+                >
+                    <button
+                        tuiIconButton
+                        icon="tuiIconMoreVer"
+                        shape="rounded"
+                        appearance="icon"
+                        size="xs"
+                    ></button>
+                </tui-hosted-dropdown>
+            </td>
+        </tr>
     </tbody>
 </table>
 

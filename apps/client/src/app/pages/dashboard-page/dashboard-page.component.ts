@@ -40,6 +40,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class DashboardPageComponent {
     private readonly refresh$ = new Subject<void>();
 
+    readonly columns = [
+        'incId',
+        'buyer',
+        'vendor',
+        'driver',
+        'responsible',
+        'product',
+        'count',
+        'density',
+        'weight',
+        'price',
+        'cost',
+        'payType',
+        'address',
+        'date',
+        'createdAt',
+        'empty',
+    ];
+
     readonly data$: Observable<Request[]> = merge(of(null), this.refresh$).pipe(
         switchMap(() =>
             forkJoin([
@@ -154,6 +173,10 @@ export class DashboardPageComponent {
 
     edit(id: string): void {
         this.referencesNavigation.editRedirect(id);
+    }
+
+    dataTyping(data: unknown): Request[] {
+        return data as Request[];
     }
 
     private openChat(id: string): void {

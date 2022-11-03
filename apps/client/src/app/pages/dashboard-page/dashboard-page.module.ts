@@ -10,6 +10,8 @@ import {
 import { PayTypeStringifyPipeModule } from './pipes/pay-type-stringify.pipe';
 import { ItemCardPropModule } from '@mnr-crm/client/components/item-card/components/item-card-prop/item-card-prop.module';
 import { ItemCardModule } from '@mnr-crm/client/components/item-card/item-card.module';
+import { TuiTableModule } from '@taiga-ui/addon-table';
+import { TuiMapperPipeModule } from '@taiga-ui/cdk';
 
 @NgModule({
     declarations: [DashboardPageComponent],
@@ -42,6 +44,8 @@ import { ItemCardModule } from '@mnr-crm/client/components/item-card/item-card.m
         PayTypeStringifyPipeModule,
         ItemCardPropModule,
         ItemCardModule,
+        TuiTableModule,
+        TuiMapperPipeModule,
     ],
 })
 export class DashboardPageModule {}
