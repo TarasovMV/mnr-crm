@@ -39,7 +39,7 @@ jobs:
           push: true
           tags: antantaru/mnr-client:latest
           platforms: linux/amd64
-          file: client.Dockerfile
+          file: ci-client.Dockerfile
 
 
 

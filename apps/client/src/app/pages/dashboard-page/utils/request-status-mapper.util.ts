@@ -1,6 +1,8 @@
-import {RequestStatus} from '@mnr-crm/shared-models';
+import { RequestStatus } from '@mnr-crm/shared-models';
 
-export const requestStatusMapper: {[key in RequestStatus]: {label: string, color: string}} = {
+export const requestStatusMapper: {
+    [key in RequestStatus]: { label: string; color: string };
+} = {
     [RequestStatus.Framed]: {
         label: 'Оформлена',
         color: 'default',
@@ -18,7 +20,7 @@ export const requestStatusMapper: {[key in RequestStatus]: {label: string, color
         color: 'green',
     },
     [RequestStatus.Canceled]: {
-        label: 'Отмена',
+        label: 'Отменена',
         color: 'red',
     },
 };
