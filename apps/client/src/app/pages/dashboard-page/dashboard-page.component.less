@@ -45,27 +45,46 @@ tr {
 .color {
     &_default {
         border: solid 1px black;
+        &:hover td {
+            background-color: var(--tui-base-03);
+        }
     }
 
     &_yellow {
         background: var(--tui-support-11);
+        &:hover td {
+            background-color: var(--tui-support-11);
+        }
     }
 
     &_blue {
         background: var(--tui-support-01);
+        &:hover td {
+            background-color: var(--tui-support-01);
+        }
     }
 
     &_green {
         background: var(--tui-support-15);
+        &:hover td {
+            background-color: var(--tui-support-15);
+        }
     }
 
     &_red {
         background: var(--tui-support-05);
+        &:hover td {
+            background-color: var(--tui-support-05);
+        }
     }
 }
 
 tui-reorder {
     width: 16rem;
+}
+
+td {
+    transition: .3s;
 }
 
 @media @tui-mobile {

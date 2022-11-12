@@ -100,30 +100,30 @@
 <table *ngIf="!isMobile" tuiTable [columns]="columns" class="tui-table">
     <thead>
         <tr tuiThGroup class="tui-table__tr tui-table__tr_border_none">
-            <th *tuiHead="'incId'" tuiTh class="tui-table__th tui-table__th_first">Номер ТТН</th>
-            <th [sorter]="null" *tuiHead="'buyer'" tuiTh class="tui-table__th">Покупатель</th>
-            <th [sorter]="null" *tuiHead="'vendor'" tuiTh class="tui-table__th">Продавец</th>
-            <th [sorter]="null" *tuiHead="'driver'" tuiTh class="tui-table__th">Водитель</th>
-            <th [sorter]="null" *tuiHead="'responsible'" tuiTh class="tui-table__th">Ответственный</th>
-            <th [sorter]="null" *tuiHead="'product'" tuiTh class="tui-table__th">Товар</th>
-            <th *tuiHead="'count'" tuiTh class="tui-table__th">Объем</th>
-            <th *tuiHead="'density'" tuiTh class="tui-table__th">Плотность</th>
-            <th *tuiHead="'weight'" tuiTh class="tui-table__th">Масса</th>
-            <th *tuiHead="'price'" tuiTh class="tui-table__th">Цена</th>
-            <th *tuiHead="'cost'" tuiTh class="tui-table__th">Стоимость</th>
-            <th *tuiHead="'vehicle'" tuiTh class="tui-table__th">Транспорт</th>
-            <th *tuiHead="'phone'" tuiTh class="tui-table__th">Телефон</th>
-            <th *tuiHead="'temperature'" tuiTh class="tui-table__th">Температура</th>
-            <th *tuiHead="'plomb'" tuiTh class="tui-table__th">Пломба</th>
-            <th [sorter]="null" *tuiHead="'payType'" tuiTh class="tui-table__th">Оплата</th>
-            <th [sorter]="null" *tuiHead="'address'" tuiTh class="tui-table__th">Адрес доставки</th>
-            <th *tuiHead="'date'" tuiTh class="tui-table__th">Дата поставки</th>
-            <th *tuiHead="'createdAt'" tuiTh class="tui-table__th">Дата создания</th>
+            <th *tuiHead="'incId'" tuiTh class="tui-table__th tui-table__th_first">{{'incId' | columnName}}</th>
+            <th [sorter]="null" *tuiHead="'buyer'" tuiTh class="tui-table__th">{{'buyer' | columnName}}</th>
+            <th [sorter]="null" *tuiHead="'vendor'" tuiTh class="tui-table__th">{{'vendor' | columnName}}</th>
+            <th [sorter]="null" *tuiHead="'driver'" tuiTh class="tui-table__th">{{'driver' | columnName}}</th>
+            <th [sorter]="null" *tuiHead="'responsible'" tuiTh class="tui-table__th">{{'responsible' | columnName}}</th>
+            <th [sorter]="null" *tuiHead="'product'" tuiTh class="tui-table__th">{{'product' | columnName}}</th>
+            <th *tuiHead="'count'" tuiTh class="tui-table__th">{{'count' | columnName}}</th>
+            <th *tuiHead="'density'" tuiTh class="tui-table__th">{{'density' | columnName}}</th>
+            <th *tuiHead="'weight'" tuiTh class="tui-table__th">{{'weight' | columnName}}</th>
+            <th *tuiHead="'price'" tuiTh class="tui-table__th">{{'price' | columnName}}</th>
+            <th *tuiHead="'cost'" tuiTh class="tui-table__th">{{'cost' | columnName}}</th>
+            <th *tuiHead="'vehicle'" tuiTh class="tui-table__th">{{'vehicle' | columnName}}</th>
+            <th *tuiHead="'phone'" tuiTh class="tui-table__th">{{'phone' | columnName}}</th>
+            <th *tuiHead="'temperature'" tuiTh class="tui-table__th">{{'temperature' | columnName}}</th>
+            <th *tuiHead="'plomb'" tuiTh class="tui-table__th">{{'plomb' | columnName}}</th>
+            <th *tuiHead="'payType'" tuiTh class="tui-table__th">{{'payType' | columnName}}</th>
+            <th [sorter]="null" *tuiHead="'address'" tuiTh class="tui-table__th">{{'address' | columnName}}</th>
+            <th *tuiHead="'date'" tuiTh class="tui-table__th">{{'date' | columnName}}</th>
+            <th *tuiHead="'createdAt'" tuiTh class="tui-table__th">{{'createdAt' | columnName}}</th>
             <th [sorter]="null" *tuiHead="'empty'" tuiTh class="tui-table__th tui-table__th_last"></th>
         </tr>
     </thead>
     <tbody *ngIf="(data$ | async | tuiTableSort | tuiMapper: dataTyping) as data" tuiTbody [data]="data">
-        <tr *ngFor="let item of data" tuiTr class="tui-table__tr tui-table__tr_border_none">
+        <tr *ngFor="let item of data" tuiTr [class]="'tui-table__tr tui-table__tr_border_none color_' + statusStyleMapper[item.status]">
             <td *tuiCell="'incId'" tuiTd class="tui-table__td tui-table__td_first">
                 <div [class]="'table-status color_' + statusStyleMapper[item.status]"></div>
                 {{item.incId}}

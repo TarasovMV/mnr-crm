@@ -13,6 +13,7 @@ import { ItemCardPropModule } from '@mnr-crm/client/components/item-card/compone
 import { ItemCardModule } from '@mnr-crm/client/components/item-card/item-card.module';
 import { TuiReorderModule, TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiMapperPipeModule } from '@taiga-ui/cdk';
+import { ColumnNamePipeModule } from './pipes/column-name.pipe';
 
 @NgModule({
     declarations: [DashboardPageComponent],
@@ -49,6 +50,7 @@ import { TuiMapperPipeModule } from '@taiga-ui/cdk';
         TuiMapperPipeModule,
         TuiReorderModule,
         TuiExpandModule,
+        ColumnNamePipeModule,
     ],
 })
 export class DashboardPageModule {}
