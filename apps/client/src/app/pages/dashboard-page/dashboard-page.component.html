@@ -1,14 +1,23 @@
 <div class="tui-text_h3 tui-space_bottom-8">Заявки</div>
 
-<div class="row tui-space_bottom-8">
+<div class="row tui-space_bottom-4">
     <button
         *ngIf="isCreateAvailable"
+        class="tui-space_right-2"
         tuiButton
         size="m"
         iconRight="tuiIconPlus"
         (click)="createRequest()"
     >Создать заявку
     </button>
+    <button
+        tuiIconButton
+        size="l"
+        appearance="flat"
+        shape="rounded"
+        icon="tuiIconSettingsLarge"
+        (click)="toggleSettings()"
+    ></button>
 
     <div class="legend">
         <div *ngFor="let item of legend" class="legend__item">
@@ -78,6 +87,16 @@
     </mnr-crm-item-card>
 </ng-container>
 
+<tui-expand [expanded]="settingsExpanded">
+    <tui-reorder
+        class="row tui-space_bottom-4"
+        [(items)]="columnNames"
+        [(enabled)]="enabledColumnNames"
+        (itemsChange)="saveSettings()"
+        (enabledChange)="saveSettings()"
+    ></tui-reorder>
+</tui-expand>
+
 <table *ngIf="!isMobile" tuiTable [columns]="columns" class="tui-table">
     <thead>
         <tr tuiThGroup class="tui-table__tr tui-table__tr_border_none">
@@ -92,6 +111,10 @@
             <th *tuiHead="'weight'" tuiTh class="tui-table__th">Масса</th>
             <th *tuiHead="'price'" tuiTh class="tui-table__th">Цена</th>
             <th *tuiHead="'cost'" tuiTh class="tui-table__th">Стоимость</th>
+            <th *tuiHead="'vehicle'" tuiTh class="tui-table__th">Транспорт</th>
+            <th *tuiHead="'phone'" tuiTh class="tui-table__th">Телефон</th>
+            <th *tuiHead="'temperature'" tuiTh class="tui-table__th">Температура</th>
+            <th *tuiHead="'plomb'" tuiTh class="tui-table__th">Пломба</th>
             <th [sorter]="null" *tuiHead="'payType'" tuiTh class="tui-table__th">Оплата</th>
             <th [sorter]="null" *tuiHead="'address'" tuiTh class="tui-table__th">Адрес доставки</th>
             <th *tuiHead="'date'" tuiTh class="tui-table__th">Дата поставки</th>
@@ -115,6 +138,10 @@
             <td *tuiCell="'weight'" tuiTd class="tui-table__td">{{item.weight}}</td>
             <td *tuiCell="'price'" tuiTd class="tui-table__td">{{item.price}}</td>
             <td *tuiCell="'cost'" tuiTd class="tui-table__td">{{item.cost}}</td>
+            <td *tuiCell="'vehicle'" tuiTd class="tui-table__td">{{item.vehicle}}</td>
+            <td *tuiCell="'phone'" tuiTd class="tui-table__td">{{item.phone}}</td>
+            <td *tuiCell="'temperature'" tuiTd class="tui-table__td">{{item.temperature}}</td>
+            <td *tuiCell="'plomb'" tuiTd class="tui-table__td">{{item.plomb}}</td>
             <td *tuiCell="'payType'" tuiTd class="tui-table__td">{{item.payType | payTypeStringify}}</td>
             <td *tuiCell="'address'" tuiTd class="tui-table__td">{{item.address}}</td>
             <td *tuiCell="'date'" tuiTd class="tui-table__td">{{item.date | date:"dd.MM.yyyy"}}</td>

@@ -20,15 +20,24 @@ import {
     merge,
     Observable,
     of,
+    startWith,
     Subject,
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { TUI_IS_MOBILE, TuiDestroyService } from '@taiga-ui/cdk';
-import { requestStatusMapper } from './utils';
+import { TUI_IS_MOBILE, TuiDestroyService, tuiPure } from '@taiga-ui/cdk';
+import { columnNameMapper, requestStatusMapper } from './utils';
 import { UserService } from '@mnr-crm/client/services/user.service';
 import { checkRoleUtil } from '../../utils';
 import { ActivatedRoute, Router } from '@angular/router';
+import { nameParamsMap } from './constants';
+
+interface PageSettings {
+    columnsSort: readonly string[];
+    columnsEnabled: readonly string[];
+}
+
+const SETTINGS_STORAGE_KEY = 'settings-v1';
 
 @Component({
     selector: 'mnr-crm-dashboard-page',
@@ -40,24 +49,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class DashboardPageComponent {
     private readonly refresh$ = new Subject<void>();
 
-    readonly columns = [
-        'incId',
-        'buyer',
-        'vendor',
-        'driver',
-        'responsible',
-        'product',
-        'count',
-        'density',
-        'weight',
-        'price',
-        'cost',
-        'payType',
-        'address',
-        'date',
-        'createdAt',
-        'empty',
+    columnNames: readonly string[] = this.loadSettings()?.columnsSort ?? [
+        ...nameParamsMap.keys(),
     ];
+    enabledColumnNames =
+        this.loadSettings()?.columnsEnabled ?? this.columnNames;
+    settingsExpanded = false;
 
     readonly data$: Observable<Request[]> = merge(of(null), this.refresh$).pipe(
         switchMap(() =>
@@ -110,7 +107,8 @@ export class DashboardPageComponent {
                         );
                 })
             )
-        )
+        ),
+        startWith([])
     );
 
     readonly context = [
@@ -156,6 +154,12 @@ export class DashboardPageComponent {
         return this.userService.checkRole([UserRole.Manager]);
     }
 
+    get columns(): (keyof Request | 'empty')[] {
+        return this.columnNames
+            .filter((c) => this.enabledColumnNames.includes(c))
+            .map((c) => columnNameMapper(c));
+    }
+
     constructor(
         @Inject(TUI_IS_MOBILE) readonly isMobile: boolean,
         private readonly userService: UserService,
@@ -177,6 +181,18 @@ export class DashboardPageComponent {
 
     dataTyping(data: unknown): Request[] {
         return data as Request[];
+    }
+
+    toggleSettings(): void {
+        this.settingsExpanded = !this.settingsExpanded;
+    }
+
+    saveSettings(): void {
+        const columnsSort = this.columnNames;
+        const columnsEnabled = this.enabledColumnNames;
+        const settings: PageSettings = { columnsSort, columnsEnabled };
+
+        localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
     }
 
     private openChat(id: string): void {
@@ -287,5 +303,16 @@ export class DashboardPageComponent {
         }
 
         return false;
+    }
+
+    @tuiPure
+    private loadSettings(): PageSettings | null {
+        const settings = localStorage.getItem(SETTINGS_STORAGE_KEY);
+
+        if (!settings) {
+            return null;
+        }
+
+        return JSON.parse(settings);
     }
 }

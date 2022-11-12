@@ -5,12 +5,13 @@ import { RouterModule } from '@angular/router';
 import {
     TuiButtonModule,
     TuiDataListModule,
+    TuiExpandModule,
     TuiHostedDropdownModule,
 } from '@taiga-ui/core';
 import { PayTypeStringifyPipeModule } from './pipes/pay-type-stringify.pipe';
 import { ItemCardPropModule } from '@mnr-crm/client/components/item-card/components/item-card-prop/item-card-prop.module';
 import { ItemCardModule } from '@mnr-crm/client/components/item-card/item-card.module';
-import { TuiTableModule } from '@taiga-ui/addon-table';
+import { TuiReorderModule, TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiMapperPipeModule } from '@taiga-ui/cdk';
 
 @NgModule({
@@ -46,6 +47,8 @@ import { TuiMapperPipeModule } from '@taiga-ui/cdk';
         ItemCardModule,
         TuiTableModule,
         TuiMapperPipeModule,
+        TuiReorderModule,
+        TuiExpandModule,
     ],
 })
 export class DashboardPageModule {}
