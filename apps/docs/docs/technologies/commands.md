@@ -21,10 +21,10 @@ docker build --platform linux/amd64 -t antantaru/mnr-backend -f backend.Dockerfi
 docker run -p3333:3333 -e DB_URL="mongodb://test:test123@127.0.0.1:27017/mnr-crm" --network="host" antantaru/mnr-backend
 
 **Docs run:**  
-docker run -3000:3000 antantaru/mnr-docs
+docker run -p3000:3000 antantaru/mnr-docs
 
 **Client run:**  
-docker run -4200:4200 antantaru/mnr-client
+docker run -p4200:4200 antantaru/mnr-client
 
 ### DB
 

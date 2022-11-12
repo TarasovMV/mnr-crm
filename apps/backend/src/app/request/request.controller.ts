@@ -101,6 +101,13 @@ export class RequestController {
         const main = workbook.worksheets[0];
         const tpl = workbook.worksheets[1];
 
+        main.eachRow((row) =>
+            row.eachCell((cell) => {
+                if (!cell.formula) return;
+                cell.model.result = undefined;
+            })
+        );
+
         const setValue = (cell, value, worksheet = tpl) =>
             (worksheet.getCell(cell).value = value ?? ' ');
         const companyStringify = (company: Buyer | Vendor) =>
@@ -160,6 +167,8 @@ export class RequestController {
         setValue(cellMapper.plomb, request.plomb);
 
         main.getRow(44).addPageBreak();
+
+        workbook.calcProperties.fullCalcOnLoad = true;
 
         const buffer = (await workbook.xlsx.writeBuffer()) as Uint8Array;
 
