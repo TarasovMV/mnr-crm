@@ -17,14 +17,14 @@ jobs:
           fetch-depth: 5
       - name: install
         run: npm ci --legacy-peer-deps
-      - name: get affected
-        run: npm run test:ci
-      - name: caching
-        id: cache-node-modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+#      - name: get affected
+#        run: npm run test:ci
+#      - name: caching
+#        id: cache-node-modules
+#        uses: actions/cache@v3
+#        with:
+#          path: node_modules
+#          key: node-modules-${{ hashFiles('package-lock.json') }}
       - name: build
         run: npm run build:client
       - name: Login to Docker Hub
