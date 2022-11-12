@@ -11,7 +11,7 @@
                 <tui-select
                     class="tui-space_top-2"
                     formControlName="status"
-                    [readOnly]="displayedControls.status"
+                    [readOnly]="!displayedControls.status"
                     [valueContent]="refStringifyArr(statusReference)"
                 >
                     Выберите статус
@@ -37,7 +37,7 @@
             <div class="tui-form__row">
                 <tui-combo-box
                     [strict]="true"
-                    [readOnly]="displayedControls.responsible"
+                    [readOnly]="!displayedControls.responsible"
                     formControlName="responsible"
                     [stringify]="refStringify"
                 >
@@ -58,7 +58,7 @@
 
             <div class="tui-form__row">
                 <tui-combo-box
-                    [readOnly]="displayedControls.vendor"
+                    [readOnly]="!displayedControls.vendor"
                     [strict]="true"
                     formControlName="vendor"
                     [stringify]="refStringify"
@@ -79,7 +79,7 @@
 
             <div class="tui-form__row">
                 <tui-combo-box
-                    [readOnly]="displayedControls.buyer"
+                    [readOnly]="!displayedControls.buyer"
                     [strict]="true"
                     formControlName="buyer"
                     [stringify]="refStringify"
@@ -100,7 +100,7 @@
 
             <div class="tui-form__row">
                 <tui-combo-box
-                    [readOnly]="displayedControls.vehicle"
+                    [readOnly]="!displayedControls.vehicle"
                     [strict]="true"
                     formControlName="vehicle"
                     [stringify]="refStringify"
@@ -121,7 +121,7 @@
 
             <div class="tui-form__row">
                 <tui-combo-box
-                    [readOnly]="displayedControls.driver"
+                    [readOnly]="!displayedControls.driver"
                     [strict]="true"
                     formControlName="driver"
                     [stringify]="refStringify"
@@ -142,7 +142,7 @@
 
             <div class="tui-form__row">
                 <tui-combo-box
-                    [readOnly]="displayedControls.product"
+                    [readOnly]="!displayedControls.product"
                     [strict]="true"
                     formControlName="product"
                     [stringify]="refStringify"
@@ -163,7 +163,7 @@
 
             <div class="tui-form__row">
                 <tui-input-number
-                    [readOnly]="displayedControls.count"
+                    [readOnly]="!displayedControls.count"
                     formControlName="count"
                     postfix="л"
                     class="tui-space_top-2"
@@ -182,7 +182,7 @@
 
             <div class="tui-form__row">
                 <tui-input-number
-                    [readOnly]="displayedControls.weight"
+                    [readOnly]="!displayedControls.weight"
                     formControlName="weight"
                     postfix="т"
                     class="tui-space_top-2"
@@ -201,7 +201,7 @@
 
             <div class="tui-form__row">
                 <tui-input-number
-                    [readOnly]="displayedControls.price"
+                    [readOnly]="!displayedControls.price"
                     formControlName="price"
                     postfix="₽"
                     class="tui-space_top-2"
@@ -220,7 +220,7 @@
 
             <div class="tui-form__row">
                 <tui-input-number
-                    [readOnly]="displayedControls.density"
+                    [readOnly]="!displayedControls.density"
                     formControlName="density"
                     class="tui-space_top-2"
                 >
@@ -238,7 +238,7 @@
 
             <div class="tui-form__row">
                 <tui-input-number
-                    [readOnly]="displayedControls.temperature"
+                    [readOnly]="!displayedControls.temperature"
                     formControlName="temperature"
                     class="tui-space_top-2"
                 >
@@ -257,7 +257,7 @@
 
             <div class="tui-form__row">
                 <tui-input
-                    [readOnly]="displayedControls.plomb"
+                    [readOnly]="!displayedControls.plomb"
                     formControlName="plomb"
                 >
                     Пломба
@@ -270,7 +270,7 @@
 
             <div class="tui-form__row">
                 <tui-select
-                    [readOnly]="displayedControls.payType"
+                    [readOnly]="!displayedControls.payType"
                     class="tui-space_top-2"
                     formControlName="payType"
                     [valueContent]="refStringifyArr(payTypesReference)"
@@ -297,7 +297,7 @@
 
             <div class="tui-form__row">
                 <tui-input
-                    [readOnly]="displayedControls.address"
+                    [readOnly]="!displayedControls.address"
                     formControlName="address"
                 >
                     Адрес
@@ -310,7 +310,7 @@
 
             <div class="tui-form__row">
                 <tui-input-phone
-                    [readOnly]="displayedControls.phone"
+                    [readOnly]="!displayedControls.phone"
                     formControlName="phone"
                 >
                     Телефон
@@ -327,7 +327,7 @@
 
             <div class="tui-form__row">
                 <tui-input-date
-                    [readOnly]="displayedControls.date"
+                    [readOnly]="!displayedControls.date"
                     tuiUnfinishedValidator="Finish filling the field"
                     formControlName="date"
                 >
