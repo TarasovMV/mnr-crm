@@ -40,14 +40,20 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: install
-        run: npm ci --legacy-peer-deps
+#      - name: install
+#        run: npm ci --legacy-peer-deps
       - name: caching
         id: cache-node-modules
         uses: actions/cache@v3
         with:
           path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
+      - if: ${{ steps.caching.outputs.cache-hit != 'true' }}
+        name: install
+        run: npm ci --legacy-peer-deps
+#       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+#       name: install
+#       run: npm ci --legacy-peer-deps
 
   client:
     runs-on: ubuntu-latest
