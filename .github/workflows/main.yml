@@ -48,7 +48,7 @@ jobs:
         with:
           path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
-      - if: ${{ steps.caching.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.caching.outputs.cache-hit == 'true' }}
         name: install
         run: npm ci --legacy-peer-deps
 #       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
