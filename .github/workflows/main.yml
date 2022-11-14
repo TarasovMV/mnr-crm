@@ -70,9 +70,8 @@ jobs:
         with:
           command: |
             docker stop client-container
-            docker rm client-container
             docker pull antantaru/mnr-client
-            docker run -d -4200:4200 --name client-container antantaru/mnr-client
+            docker run -d -4200:4200 --name client-container --rm antantaru/mnr-client
           username: root
           host: ${{ secrets.SSH_HOST }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
@@ -111,7 +110,7 @@ jobs:
             docker stop backend-container
             docker rm backend-container
             docker pull antantaru/mnr-backend
-            docker run --env-file="docker_vars.env" --network="host" --name backend-container antantaru/mnr-backend
+            docker run -d --env-file="docker_vars.env" --network="host" --name --rm backend-container antantaru/mnr-backend
           username: root
           host: ${{ secrets.SSH_HOST }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
