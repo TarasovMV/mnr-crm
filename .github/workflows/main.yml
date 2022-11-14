@@ -6,34 +6,20 @@ on:
       - main
 
 jobs:
-  ssh:
+  install:
     runs-on: ubuntu-latest
     steps:
-      - name: via ssh
-        uses: garygrossgarten/github-action-ssh@release
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: caching
+        id: caching
+        uses: actions/cache@v3
         with:
-          command: |
-            docker stop docs-container
-            docker rm docs-container
-            docker pull antantaru/mnr-docs
-            docker run -d -p3000:3000 --name docs-container antantaru/mnr-docs
-          username: root
-          host: ${{ secrets.SSH_HOST }}
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
-#  install:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: checkout
-#        uses: actions/checkout@v3
-#      - name: caching
-#        id: caching
-#        uses: actions/cache@v3
-#        with:
-#          path: node_modules
-#          key: node-modules-${{ hashFiles('package-lock.json') }}
-#      - if: ${{ steps.caching.outputs.cache-hit != 'true' }}
-#        name: install
-#        run: npm ci --legacy-peer-deps
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - if: ${{ steps.caching.outputs.cache-hit != 'true' }}
+        name: install
+        run: npm ci --legacy-peer-deps
 #
 #  test:
 #    runs-on: ubuntu-latest
@@ -108,33 +94,47 @@ jobs:
 #          platforms: linux/amd64
 #          file: ci-backend.Dockerfile
 #
-#  docs:
-#    runs-on: ubuntu-latest
-#    needs: test
-#    steps:
-#      - name: checkout
-#        uses: actions/checkout@v3
-#      - name: restore cache
-#        id: cache-node-modules
-#        uses: actions/cache@v3
-#        with:
-#          path: node_modules
-#          key: node-modules-${{ hashFiles('package-lock.json') }}
-#      - name: build
-#        run: npm run build:docs
-#      - name: docker login
-#        uses: docker/login-action@v2
-#        with:
-#          username: ${{ secrets.DOCKERHUB_USERNAME }}
-#          password: ${{ secrets.DOCKERHUB_TOKEN }}
-#      - name: build and push
-#        uses: docker/build-push-action@v3
-#        with:
-#          context: .
-#          push: true
-#          tags: antantaru/mnr-docs
-#          platforms: linux/amd64
-#          file: ci-docs.Dockerfile
+  docs:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: restore cache
+        id: cache-node-modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - name: build
+        run: npm run build:docs
+      - name: docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: antantaru/mnr-docs
+          platforms: linux/amd64
+          file: ci-docs.Dockerfile
+          ssh:
+            runs-on: ubuntu-latest
+            steps:
+      - name: deploy by ssh
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: |
+            docker stop docs-container
+            docker rm docs-container
+            docker pull antantaru/mnr-docs
+            docker run -d -p3000:3000 --name docs-container antantaru/mnr-docs
+          username: root
+          host: ${{ secrets.SSH_HOST }}
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
 
 
 
