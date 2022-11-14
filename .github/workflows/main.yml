@@ -13,10 +13,12 @@ jobs:
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: |
-            docker ps
-            ls -la
-          host: ${{ secrets.SSH_HOST }}
+            docker stop docs-container
+            docker rm docs-container
+            docker pull antantaru/mnr-docs
+            docker run -d -p3000:3000 --name docs-container antantaru/mnr-docs
           username: root
+          host: ${{ secrets.SSH_HOST }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
 #  install:
 #    runs-on: ubuntu-latest
