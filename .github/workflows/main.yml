@@ -8,7 +8,7 @@ on:
 jobs:
   ssh:
     - name: via ssh
-      uses: fifsky/ssh-action@master
+      uses: garygrossgarten/github-action-ssh@release
       with:
         command: |
           docker ps
