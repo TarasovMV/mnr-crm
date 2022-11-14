@@ -7,15 +7,17 @@ on:
 
 jobs:
   ssh:
-    - name: via ssh
-      uses: garygrossgarten/github-action-ssh@release
-      with:
-        command: |
-          docker ps
-          ls -la
-        host: ${{ secrets.SSH_HOST }}
-        user: root
-        key: ${{ secrets.SSH_PRIVATE_KEY}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: via ssh
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: |
+            docker ps
+            ls -la
+          host: ${{ secrets.SSH_HOST }}
+          user: root
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
 #  install:
 #    runs-on: ubuntu-latest
 #    steps:
