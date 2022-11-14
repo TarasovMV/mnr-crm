@@ -121,9 +121,6 @@ jobs:
           tags: antantaru/mnr-docs
           platforms: linux/amd64
           file: ci-docs.Dockerfile
-          ssh:
-            runs-on: ubuntu-latest
-            steps:
       - name: deploy by ssh
         uses: garygrossgarten/github-action-ssh@release
         with:
