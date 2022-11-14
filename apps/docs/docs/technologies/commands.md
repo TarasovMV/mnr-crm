@@ -18,7 +18,7 @@ Etc -> nginx -> nginx.conf
 docker build --platform linux/amd64 -t antantaru/mnr-backend -f backend.Dockerfile .
 
 **Back run:**
-docker run -p3333:3333 -e DB_URL="mongodb://test:test123@127.0.0.1:27017/mnr-crm" --network="host" antantaru/mnr-backend
+docker run --env-file="docker_vars.env" --network="host" antantaru/mnr-backend
 
 **Docs run:**  
 docker run -p3000:3000 antantaru/mnr-docs
