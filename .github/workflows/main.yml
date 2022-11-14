@@ -17,7 +17,7 @@ jobs:
             ls -la
           host: ${{ secrets.SSH_HOST }}
           user: root
-          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
 #  install:
 #    runs-on: ubuntu-latest
 #    steps:
