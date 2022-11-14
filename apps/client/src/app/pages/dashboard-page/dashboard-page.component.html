@@ -76,6 +76,11 @@
         ></mnr-crm-item-card-prop>
 
         <mnr-crm-item-card-prop
+            label="Статус"
+            [description]="item.status"
+        ></mnr-crm-item-card-prop>
+
+        <mnr-crm-item-card-prop
             *ngIf="item.phone"
             label="Телефон"
             description="<a href='tel:{{item.phone}}'>{{item.phone}}</a>"

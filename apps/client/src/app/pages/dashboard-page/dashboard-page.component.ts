@@ -102,8 +102,8 @@ export class DashboardPageComponent {
                         }))
                         .sort(
                             (cur, next) =>
-                                new Date(next.createdAt).getTime() -
-                                new Date(cur.createdAt).getTime()
+                                new Date(next.date).getTime() -
+                                new Date(cur.date).getTime()
                         );
                 })
             )
