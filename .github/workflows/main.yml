@@ -12,12 +12,12 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: caching
-        id: cache-node-modules
+        id: caching
         uses: actions/cache@v3
         with:
           path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
-      - if: ${{ steps.caching.outputs.cache-node-modules != 'true' }}
+      - if: ${{ steps.caching.outputs.cache-hit != 'true' }}
         name: install
         run: npm ci --legacy-peer-deps
 
@@ -92,7 +92,7 @@ jobs:
           push: true
           tags: antantaru/mnr-backend:latest
           platforms: linux/amd64
-          file: ci-client.Dockerfile
+          file: ci-backend.Dockerfile
 
   docs:
     runs-on: ubuntu-latest
@@ -118,7 +118,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: antantaru/mnr-docs:latest
+          tags: antantaru/mnr-docs
           platforms: linux/amd64
           file: ci-docs.Dockerfile
 
