@@ -9,7 +9,7 @@ const config = {
     title: 'MNR CRM Documentation',
     tagline: 'Здесь ты сможешь найти всю информацию о проекте',
     url: 'https://your-docusaurus-test-site.com',
-    baseUrl: '/docs/',
+    baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
