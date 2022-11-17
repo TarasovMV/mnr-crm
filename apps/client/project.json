@@ -22,7 +22,8 @@
                         "glob": "**/*",
                         "input": "node_modules/@taiga-ui/icons/src",
                         "output": "assets/taiga-ui/icons"
-                    }
+                    },
+                    "apps/client/src/manifest.webmanifest"
                 ],
                 "styles": [
                     "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
@@ -30,7 +31,9 @@
                     "node_modules/@taiga-ui/styles/taiga-ui-global.less",
                     "apps/client/src/styles.less"
                 ],
-                "scripts": []
+                "scripts": [],
+                "serviceWorker": true,
+                "ngswConfigPath": "apps/client/ngsw-config.json"
             },
             "configurations": {
                 "production": {
