@@ -109,10 +109,22 @@ export class RequestFormComponent implements OnInit {
 
     readonly statusReference: ReferenceItem[] = Object.entries(
         requestStatusMapper
-    ).map((p) => ({
-        id: p[0],
-        label: p[1].label,
-    }));
+    )
+        .map((p) => ({
+            id: p[0] as RequestStatus,
+            label: p[1].label,
+        }))
+        .filter((x) => {
+            if (!this.userService.checkRole([UserRole.Driver], false)) {
+                return true;
+            }
+
+            return [
+                RequestStatus.Appointed,
+                RequestStatus.InTransit,
+                RequestStatus.Executed,
+            ].includes(x.id);
+        });
 
     readonly references$ = forkJoin([
         this.apiReference

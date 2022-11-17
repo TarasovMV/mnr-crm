@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, map, Observable} from 'rxjs';
-import {User, UserRole} from '@mnr-crm/shared-models';
-import {checkRoleUtil} from '../utils';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { User, UserRole } from '@mnr-crm/shared-models';
+import { checkRoleUtil } from '../utils';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class UserService {
     readonly user$ = new BehaviorSubject<User | null>(null);
@@ -19,13 +19,13 @@ export class UserService {
         );
     }
 
-    checkRole(roles: UserRole[]): boolean {
+    checkRole(roles: UserRole[], root: boolean = true): boolean {
         const user = this.user$.getValue();
 
         if (!user) {
             return false;
         }
 
-        return checkRoleUtil(user, roles);
+        return checkRoleUtil(user, roles, root);
     }
 }
