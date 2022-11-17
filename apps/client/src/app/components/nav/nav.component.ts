@@ -12,30 +12,36 @@ import { UserRole } from '@mnr-crm/shared-models';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavComponent {
-    readonly references = [
+    readonly referencesItems = [
         {
             label: 'Продавцы',
             url: 'vendors',
+            condition: () => this.userService.checkRole([]),
         },
         {
             label: 'Покупатели',
             url: 'buyers',
+            condition: () => this.userService.checkRole([UserRole.Manager]),
         },
         {
             label: 'Поставщики',
             url: 'providers',
+            condition: () => this.userService.checkRole([]),
         },
         {
             label: 'Сотрудники',
             url: 'employers',
+            condition: () => this.userService.checkRole([]),
         },
         {
             label: 'Транспортные средства',
             url: 'vehicles',
+            condition: () => this.userService.checkRole([]),
         },
         {
             label: 'Продукция',
             url: 'products',
+            condition: () => this.userService.checkRole([]),
         },
     ];
 
@@ -45,6 +51,10 @@ export class NavComponent {
             action: () => this.exit(),
         },
     ];
+
+    get references() {
+        return this.referencesItems.filter((i) => i.condition());
+    }
 
     isReferenceMenuOpen = false;
     isDotMenuOpen = false;
@@ -63,7 +73,7 @@ export class NavComponent {
     );
 
     get isReferencesAvailable(): boolean {
-        return this.userService.checkRole([]);
+        return this.userService.checkRole([UserRole.Manager]);
     }
 
     get isIncomeAvailable(): boolean {
