@@ -14,7 +14,7 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { Buyer, Income, Product } from '@mnr-crm/shared-models';
+import { Income, Product } from '@mnr-crm/shared-models';
 import { ApiIncomesService } from '@mnr-crm/client/services/api/api-incomes.service';
 
 @Component({
@@ -71,6 +71,10 @@ export class IncomesPageComponent {
 
     create(): void {
         this.referencesNavigation.createRedirect();
+    }
+
+    downloadReport(): void {
+        this.apiIncomes.downloadReport();
     }
 
     private edit(id: string): void {

@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Income} from '@mnr-crm/shared-models';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Income } from '@mnr-crm/shared-models';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ApiIncomesService {
     constructor(private readonly http: HttpClient) {}
 
     getAll(): Observable<Income[]> {
-        return this.http.get<Income[]>('/api/incomes/all')
+        return this.http.get<Income[]>('/api/incomes/all');
     }
 
     getById(id: string): Observable<Income> {
@@ -27,5 +27,9 @@ export class ApiIncomesService {
 
     create(body: Income): Observable<Income> {
         return this.http.post<Income>('/api/incomes/create', body);
+    }
+
+    downloadReport(): void {
+        window.open(`/api/incomes/report`);
     }
 }

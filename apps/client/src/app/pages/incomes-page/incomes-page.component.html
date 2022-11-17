@@ -1,12 +1,23 @@
 <div class="tui-text_h3 tui-space_bottom-8">Приходы</div>
 
-<div class="row tui-space_bottom-8">
+<div class="row buttons tui-space_bottom-8">
     <button
         tuiButton
         size="m"
         iconRight="tuiIconPlus"
         (click)="create()"
     >Добавить</button>
+
+    <button
+        *ngIf="!isMobile"
+        class="tui-space_left-2"
+        tuiIconButton
+        size="l"
+        appearance="flat"
+        shape="rounded"
+        icon="tuiIconFileLarge"
+        (click)="downloadReport()"
+    ></button>
 </div>
 
 <ng-container *ngIf="isMobile">

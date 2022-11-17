@@ -4,13 +4,14 @@ import { Income, IncomeType } from '@mnr-crm/shared-models';
 import { DEFAULT_SCHEMA_PARAMS } from './consts';
 import { dbNameMapper } from '../utils/db-name.util';
 import { BuyerDto } from './buyer.schema';
+import { ProductDto } from './product.schema';
 
 @Schema(DEFAULT_SCHEMA_PARAMS)
 export class IncomeDto extends Document implements Income {
     @Prop({ type: Types.ObjectId, ref: dbNameMapper[BuyerDto.name] })
     company: string;
 
-    @Prop()
+    @Prop({ type: Types.ObjectId, ref: dbNameMapper[ProductDto.name] })
     fuel: string;
 
     @Prop()
