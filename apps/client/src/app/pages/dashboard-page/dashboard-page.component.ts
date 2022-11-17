@@ -15,6 +15,8 @@ import {
     Vendor,
 } from '@mnr-crm/shared-models';
 import {
+    combineLatest,
+    debounceTime,
     forkJoin,
     map,
     merge,
@@ -31,6 +33,7 @@ import { UserService } from '@mnr-crm/client/services/user.service';
 import { checkRoleUtil } from '../../utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { nameParamsMap } from './constants';
+import { FormControl } from '@angular/forms';
 
 interface PageSettings {
     columnsSort: readonly string[];
@@ -55,6 +58,9 @@ export class DashboardPageComponent {
     enabledColumnNames =
         this.loadSettings()?.columnsEnabled ?? this.columnNames;
     settingsExpanded = false;
+    filtersExpanded = false;
+
+    readonly searchControl = new FormControl('');
 
     readonly data$: Observable<Request[]> = merge(of(null), this.refresh$).pipe(
         switchMap(() =>
@@ -109,6 +115,24 @@ export class DashboardPageComponent {
             )
         ),
         startWith([])
+    );
+
+    readonly filteredData$: Observable<Request[]> = combineLatest([
+        this.searchControl.valueChanges.pipe(debounceTime(300), startWith('')),
+        this.data$,
+    ]).pipe(
+        map(([search, data]) => {
+            return data.filter((r) => {
+                return Object.values(r)
+                    .filter((c) => !!c)
+                    .some((c) =>
+                        c
+                            .toString()
+                            .toLowerCase()
+                            .includes((search as string).toLowerCase())
+                    );
+            });
+        })
     );
 
     readonly context = [
@@ -185,6 +209,16 @@ export class DashboardPageComponent {
 
     toggleSettings(): void {
         this.settingsExpanded = !this.settingsExpanded;
+        if (this.settingsExpanded) {
+            this.filtersExpanded = false;
+        }
+    }
+
+    toggleFilters(): void {
+        this.filtersExpanded = !this.filtersExpanded;
+        if (this.filtersExpanded) {
+            this.settingsExpanded = false;
+        }
     }
 
     saveSettings(): void {

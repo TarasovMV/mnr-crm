@@ -16,6 +16,16 @@
         size="l"
         appearance="flat"
         shape="rounded"
+        icon="tuiIconFilterLarge"
+        (click)="toggleFilters()"
+    ></button>
+    <button
+        *ngIf="!isMobile"
+        class="tui-space_left-2"
+        tuiIconButton
+        size="l"
+        appearance="flat"
+        shape="rounded"
         icon="tuiIconSettingsLarge"
         (click)="toggleSettings()"
     ></button>
@@ -88,6 +98,16 @@
     </mnr-crm-item-card>
 </ng-container>
 
+<tui-expand [expanded]="filtersExpanded">
+    <tui-input
+        [formControl]="searchControl"
+        class="tui-space_bottom-4 search"
+        [tuiTextfieldCleaner]="true"
+    >
+        Поиск по таблице
+    </tui-input>
+</tui-expand>
+
 <tui-expand [expanded]="settingsExpanded">
     <tui-reorder
         class="row tui-space_bottom-4"
@@ -123,7 +143,7 @@
             <th [sorter]="null" *tuiHead="'empty'" tuiTh class="tui-table__th tui-table__th_last"></th>
         </tr>
     </thead>
-    <tbody *ngIf="(data$ | async | tuiTableSort | tuiMapper: dataTyping) as data" tuiTbody [data]="data">
+    <tbody *ngIf="(filteredData$ | async | tuiTableSort | tuiMapper: dataTyping) as data" tuiTbody [data]="data">
         <tr *ngFor="let item of data" tuiTr [class]="'tui-table__tr tui-table__tr_border_none color_' + statusStyleMapper[item.status]">
             <td *tuiCell="'incId'" tuiTd class="tui-table__td tui-table__td_first">
                 <div [class]="'table-status color_' + statusStyleMapper[item.status]"></div>

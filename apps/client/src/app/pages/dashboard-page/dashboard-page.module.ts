@@ -7,6 +7,7 @@ import {
     TuiDataListModule,
     TuiExpandModule,
     TuiHostedDropdownModule,
+    TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { PayTypeStringifyPipeModule } from './pipes/pay-type-stringify.pipe';
 import { ItemCardPropModule } from '@mnr-crm/client/components/item-card/components/item-card-prop/item-card-prop.module';
@@ -14,6 +15,8 @@ import { ItemCardModule } from '@mnr-crm/client/components/item-card/item-card.m
 import { TuiReorderModule, TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiMapperPipeModule } from '@taiga-ui/cdk';
 import { ColumnNamePipeModule } from './pipes/column-name.pipe';
+import { TuiInputModule } from '@taiga-ui/kit';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [DashboardPageComponent],
@@ -51,6 +54,9 @@ import { ColumnNamePipeModule } from './pipes/column-name.pipe';
         TuiReorderModule,
         TuiExpandModule,
         ColumnNamePipeModule,
+        TuiInputModule,
+        TuiTextfieldControllerModule,
+        ReactiveFormsModule,
     ],
 })
 export class DashboardPageModule {}
