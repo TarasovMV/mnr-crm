@@ -7,7 +7,7 @@ import {
 } from '@taiga-ui/core';
 import { TUI_LANGUAGE, TUI_RUSSIAN_LANGUAGE } from '@taiga-ui/i18n';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, isDevMode } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -32,7 +32,7 @@ import { environment } from '../environments/environment';
         TuiModeModule,
         TuiThemeNightModule,
         ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: !(() => isDevMode())(),
+            enabled: environment.production,
             // Register the ServiceWorker as soon as the application is stable
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000',
