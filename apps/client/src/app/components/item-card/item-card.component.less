@@ -8,3 +8,35 @@ tui-island {
     flex-flow: column;
     gap: 1rem;
 }
+
+.color {
+    &_default {
+        &:before {
+            border: solid .25rem var(--tui-base-03);
+        }
+    }
+
+    &_yellow {
+        &:before {
+            border: solid .25rem var(--tui-support-11);
+        }
+    }
+
+    &_blue {
+        &:before {
+            border: solid .25rem var(--tui-support-01);
+        }
+    }
+
+    &_green {
+        &:before {
+            border: solid .25rem var(--tui-support-15);
+        }
+    }
+
+    &_red {
+        &:before {
+            border: solid .25rem var(--tui-support-05);
+        }
+    }
+}

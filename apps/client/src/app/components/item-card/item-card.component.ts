@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RequestStatus } from '@mnr-crm/shared-models';
+import { requestStatusMapper } from '../../pages/dashboard-page/utils';
 
 @Component({
     selector: 'mnr-crm-item-card',
@@ -6,4 +8,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     styleUrls: ['./item-card.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ItemCardComponent {}
+export class ItemCardComponent {
+    @Input() status: RequestStatus | undefined;
+
+    get styleClass(): string {
+        if (!this.status) {
+            return '';
+        }
+
+        return `color_${requestStatusMapper[this.status].color}`;
+    }
+}

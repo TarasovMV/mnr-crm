@@ -29,7 +29,7 @@
 </div>
 
 <ng-container *ngIf="isMobile">
-    <mnr-crm-item-card *ngFor="let item of data$ | async">
+    <mnr-crm-item-card *ngFor="let item of data$ | async" [status]="item.status">
         <tui-hosted-dropdown
             [(open)]="menu[item.id!]"
             class="item-card-menu"
@@ -73,11 +73,6 @@
         <mnr-crm-item-card-prop
             label="Адрес"
             [description]="item.address"
-        ></mnr-crm-item-card-prop>
-
-        <mnr-crm-item-card-prop
-            label="Статус"
-            [description]="item.status"
         ></mnr-crm-item-card-prop>
 
         <mnr-crm-item-card-prop
