@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Income } from '@mnr-crm/shared-models';
+import { FileSaver } from '../../utils';
 
 @Injectable({
     providedIn: 'root',
@@ -30,6 +31,18 @@ export class ApiIncomesService {
     }
 
     downloadReport(): void {
-        window.open(`/api/incomes/report`);
+        this.http
+            .get(`/api/incomes/report`, { responseType: 'blob' as 'json' })
+            .subscribe((response: any) => {
+                const dataType = response.type;
+                const binaryData = [];
+                binaryData.push(response);
+                FileSaver.download(
+                    new Blob(binaryData, { type: dataType }),
+                    `Отчет по приходам от ${new Date().toLocaleDateString(
+                        'ru-RU'
+                    )}.xlsx`
+                );
+            });
     }
 }

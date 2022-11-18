@@ -1,10 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Request} from '@mnr-crm/shared-models';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Request } from '@mnr-crm/shared-models';
+import { Observable } from 'rxjs';
+import { FileSaver } from '../../utils';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ApiRequestService {
     constructor(private readonly http: HttpClient) {}
@@ -34,6 +35,16 @@ export class ApiRequestService {
     }
 
     downloadTTN(id: string): void {
-        window.open(`/api/request/ttn/${id}`)
+        this.http
+            .get(`/api/request/ttn/${id}`, { responseType: 'blob' as 'json' })
+            .subscribe((response: any) => {
+                const dataType = response.type;
+                const binaryData = [];
+                binaryData.push(response);
+                FileSaver.download(
+                    new Blob(binaryData, { type: dataType }),
+                    `ttn_${id}.xlsx`
+                );
+            });
     }
 }
