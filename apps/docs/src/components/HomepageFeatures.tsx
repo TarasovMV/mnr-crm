@@ -11,31 +11,28 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
     {
         title: 'Бизнес процессы',
-        image: '/docs/img/undraw_docusaurus_mountain.svg',
+        image: '/img/undraw_docusaurus_mountain.svg',
         description: (
-            <>
-                Здесь будет находиться описание бизнес логики
-                и процессов
-            </>
+            <>Здесь будет находиться описание бизнес логики и процессов</>
         ),
     },
     {
         title: 'Техническая документация',
-        image: '/docs/img/undraw_docusaurus_tree.svg',
+        image: '/img/undraw_docusaurus_tree.svg',
         description: (
             <>
-                Здесь будет находиться описание стека технологий,
-                доступы к серверам, инструкции по развертыванию
+                Здесь будет находиться описание стека технологий, доступы к
+                серверам, инструкции по развертыванию
             </>
         ),
     },
     {
         title: 'Отслеживание прогресса',
-        image: '/docs/img/undraw_docusaurus_react.svg',
+        image: '/img/undraw_docusaurus_react.svg',
         description: (
             <>
-                Здесь можно посмотреть changelog проекта и узнать
-                на какой стадии разработки он сейчас находится
+                Здесь можно посмотреть changelog проекта и узнать на какой
+                стадии разработки он сейчас находится
             </>
         ),
     },
