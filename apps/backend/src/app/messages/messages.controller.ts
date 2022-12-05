@@ -18,6 +18,9 @@ import { MessageDto } from '../schemas/message.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { filter, map, Observable, Subject } from 'rxjs';
+import * as path from 'path';
+
+const PATH = path.join(__dirname, 'chat-images');
 
 @Controller('messages')
 export class MessagesController {
@@ -88,5 +91,14 @@ export class MessagesController {
             filter((m) => m.requestId === params.requestId),
             map((m) => ({ data: m }))
         );
+    }
+
+    @Post('upload-image2')
+    @UseInterceptors(FileInterceptor('file', { dest: PATH }))
+    async uploadImage2(
+        @Request() req,
+        @UploadedFile() file: Express.Multer.File
+    ) {
+        return file;
     }
 }
