@@ -1,9 +1,16 @@
 {
     "/api": {
-    "target": "http://localhost:3333/api",
+        "target": "http://localhost:3333/api",
         "secure": false,
         "pathRewrite": {
             "^/api": ""
+        }
+    },
+    "/cdn": {
+        "target": "https://mnr-crm.ru/cdn",
+        "secure": false,
+        "pathRewrite": {
+            "^/cdn": ""
         }
     }
 }

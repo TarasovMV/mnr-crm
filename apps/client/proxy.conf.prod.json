@@ -5,5 +5,12 @@
         "pathRewrite": {
             "^/api": ""
         }
+    },
+    "/cdn": {
+        "target": "https://mnr-crm.ru/cdn",
+        "secure": false,
+        "pathRewrite": {
+            "^/cdn": ""
+        }
     }
 }

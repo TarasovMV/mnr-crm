@@ -4,7 +4,7 @@
     <mnr-crm-chat-message
         *ngFor="let message of messages$ | async; trackBy: $any(trackById)"
         [type]="message.type"
-        [imgSrc]="message.imgSrc"
+        [imgSrc]="message.imgSrc || message.id"
         [text]="message.text"
         [timestamp]="message.timestamp"
         [author]="message.author"

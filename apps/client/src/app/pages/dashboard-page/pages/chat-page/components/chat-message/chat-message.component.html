@@ -4,7 +4,7 @@
         {{text}}
     </ng-container>
     <ng-container *ngIf="type === 'IMAGE'">
-        <img src="{{imgSrc}}"/>
+        <img src="/cdn/chat/{{imgSrc}}"/>
     </ng-container>
     <div class="timestamp">{{ timestamp | date: 'HH:mm dd.MM.yyyy' }}</div>
 </div>
