@@ -18,8 +18,6 @@ export class AuthGuard implements CanActivate {
     ) {}
 
     canActivate(): Observable<boolean | UrlTree> {
-        this.pushConnection();
-
         return this.apiAuth.current().pipe(
             tap((user) => this.userService.user$.next(user)),
             tap(() => this.pushConnection()),
