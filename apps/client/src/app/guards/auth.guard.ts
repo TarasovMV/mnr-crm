@@ -26,6 +26,7 @@ export class AuthGuard implements CanActivate {
         );
     }
 
+    // TODO: replace to app.component -> user sub
     private pushConnection(): void {
         this.swPush
             .requestSubscription({ serverPublicKey: VAPID_KEY })
