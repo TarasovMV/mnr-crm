@@ -12,7 +12,7 @@ import { IncomesModule } from './incomes/incomes.module';
 import { argsConfig } from './utils/args-config.util';
 import { MessagesModule } from './messages/messages.module';
 
-const dbUrl = argsConfig<string>('DB_URL');
+const dbUrl = argsConfig<string>('DB_URL') || process.env.DB_URL;
 
 @Module({
     imports: [

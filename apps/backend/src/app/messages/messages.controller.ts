@@ -2,7 +2,6 @@ import {
     Body,
     Controller,
     Get,
-    Logger,
     MessageEvent,
     Param,
     Post,
@@ -13,15 +12,16 @@ import {
     UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Message, MessageType } from '@mnr-crm/shared-models';
+import { Message, MessageType, VAPID_KEY } from '@mnr-crm/shared-models';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MessageDto } from '../schemas/message.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { filter, map, Observable, Subject } from 'rxjs';
 import * as path from 'path';
-import * as fs from 'fs';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const webpush = require('web-push');
 const PATH = path.join(__dirname, 'chat-images');
 
 @Controller('messages')
@@ -82,6 +82,59 @@ export class MessagesController {
     @Get('request/:requestId')
     async getByRequest(@Param() params) {
         return this.messageQuery.find({ requestId: params.requestId }).exec();
+    }
+
+    @Post('push')
+    async sendPush(@Body() sub) {
+        // const sub = {
+        //     endpoint:
+        //         'https://fcm.googleapis.com/fcm/send/fO63wrLx6qM:APA91bGVXljGgT8cDkZg7aajznd3a0mVj2t1CDjqLI1rF6ptomTLI1EounBcCnrZp_yaYKPWymmkEpSRP2J7B5QNkbI8wW1ebXIuIlOa_PN45ZJaLNXMjFL4CXtSDgqMJ5padrwTlKn1',
+        //     expirationTime: null,
+        //     keys: {
+        //         p256dh: 'BG3M5DpSsVGIT0kSBe63x-_Sc-AFulboGdWpFlPfZsGDNbAq6DUrZPXsFibun1Ivie8kCG7ZCCwo9-zhfUmiScU',
+        //         auth: 'vHLBC0Anq1zoaQcGKClhjA',
+        //     },
+        // };
+
+        const notificationPayload = {
+            notification: {
+                title: 'MNR-CRM News',
+                body: 'Newsletter Available!',
+                icon: 'assets/icon-48x48.png',
+                vibrate: [100, 50, 100],
+                data: {
+                    dateOfArrival: Date.now(),
+                    primaryKey: 1,
+                },
+                actions: [
+                    {
+                        action: 'explore',
+                        title: 'Go to the site',
+                    },
+                ],
+            },
+        };
+
+        const options = {
+            vapidDetails: {
+                subject: 'mailto:example@yourdomain.org',
+                publicKey: VAPID_KEY,
+                privateKey: 'S3aBlDhDrkNlGcIalHP8-t6UbEtlpHpBmR7CBm8etSQ',
+            },
+        };
+
+        webpush.setVapidDetails(
+            'mailto:example@yourdomain.org',
+            VAPID_KEY,
+            'S3aBlDhDrkNlGcIalHP8-t6UbEtlpHpBmR7CBm8etSQ'
+        );
+
+        const res = await webpush.sendNotification(
+            sub,
+            JSON.stringify(notificationPayload),
+            options
+        );
+        return res;
     }
 
     // TODO: add polyfill to auth
