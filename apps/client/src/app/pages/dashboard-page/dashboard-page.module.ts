@@ -7,6 +7,8 @@ import {
     TuiDataListModule,
     TuiExpandModule,
     TuiHostedDropdownModule,
+    TuiLoaderModule,
+    TuiScrollbarModule,
     TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { PayTypeStringifyPipeModule } from './pipes/pay-type-stringify.pipe';
@@ -17,6 +19,7 @@ import { TuiMapperPipeModule } from '@taiga-ui/cdk';
 import { ColumnNamePipeModule } from './pipes/column-name.pipe';
 import { TuiInputModule } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
     declarations: [DashboardPageComponent],
@@ -57,6 +60,9 @@ import { ReactiveFormsModule } from '@angular/forms';
         TuiInputModule,
         TuiTextfieldControllerModule,
         ReactiveFormsModule,
+        ScrollingModule,
+        TuiScrollbarModule,
+        TuiLoaderModule,
     ],
 })
 export class DashboardPageModule {}

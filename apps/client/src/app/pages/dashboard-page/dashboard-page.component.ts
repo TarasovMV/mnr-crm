@@ -22,6 +22,7 @@ import {
     merge,
     Observable,
     of,
+    shareReplay,
     startWith,
     Subject,
     switchMap,
@@ -62,7 +63,10 @@ export class DashboardPageComponent {
 
     readonly searchControl = new FormControl('');
 
-    readonly data$: Observable<Request[]> = merge(of(null), this.refresh$).pipe(
+    readonly data$: Observable<Request[] | null> = merge(
+        of(null),
+        this.refresh$
+    ).pipe(
         switchMap(() =>
             forkJoin([
                 this.apiRequest.getAll(),
@@ -114,7 +118,8 @@ export class DashboardPageComponent {
                 })
             )
         ),
-        startWith([])
+        startWith(null),
+        shareReplay({ refCount: true, bufferSize: 1 })
     );
 
     readonly filteredData$: Observable<Request[]> = combineLatest([
@@ -122,7 +127,7 @@ export class DashboardPageComponent {
         this.data$,
     ]).pipe(
         map(([search, data]) => {
-            return data.filter((r) => {
+            return (data ?? []).filter((r) => {
                 return Object.values(r)
                     .filter((c) => !!c)
                     .some((c) =>
@@ -172,7 +177,8 @@ export class DashboardPageComponent {
     readonly statusStyleMapper = Object.entries(requestStatusMapper).reduce(
         (acc, next) => ({ ...acc, [next[0]]: next[1].color }),
         {}
-    ) as { [key in RequestStatus]: string };
+    ) as any; // TODO
+    // ) as { [key in RequestStatus]: string };
 
     get isCreateAvailable(): boolean {
         return this.userService.checkRole([UserRole.Manager]);

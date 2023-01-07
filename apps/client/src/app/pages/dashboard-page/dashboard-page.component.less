@@ -3,6 +3,53 @@
 :host {
     display: flex;
     flex-flow: column;
+    height: calc(100% + 2rem);
+}
+
+.tui-table__th_first {
+    &:before {
+        border-radius: 0;
+        border-top: 1px solid var(--tui-base-04);
+        top: -1px;
+    }
+}
+
+.tui-table__th_last {
+    &:after {
+        display: none;
+    }
+}
+
+.loader {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    tui-loader {
+        width: 100%;
+    }
+}
+
+tui-scrollbar {
+    flex-grow: 1;
+    margin: 0 -2rem;
+
+    ::ng-deep {
+        .t-content {
+            height: 100%;
+        }
+    }
+}
+
+.viewport {
+    height: 100%;
+}
+
+table {
+    margin: 0 2rem 0 2.25rem;
+    width: calc(100% - 4.25rem);
 }
 
 tr {
@@ -85,6 +132,10 @@ tr {
 
 tui-reorder {
     width: 16rem;
+}
+
+th {
+    border-radius: 0 !important;
 }
 
 td {
