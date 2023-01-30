@@ -47,4 +47,20 @@ export class ApiRequestService {
                 );
             });
     }
+
+    downloadReport(): void {
+        this.http
+            .get(`/api/request/report`, { responseType: 'blob' as 'json' })
+            .subscribe((response: any) => {
+                const dataType = response.type;
+                const binaryData = [];
+                binaryData.push(response);
+                FileSaver.download(
+                    new Blob(binaryData, { type: dataType }),
+                    `Отчет по заявкам от ${new Date().toLocaleDateString(
+                        'ru-RU'
+                    )}.xlsx`
+                );
+            });
+    }
 }

@@ -20,7 +20,7 @@
         (click)="toggleFilters()"
     ></button>
     <button
-        *ngIf="!isMobile"
+        *ngIf="!isMobile && isReportAvailable"
         class="tui-space_left-2"
         tuiIconButton
         size="l"
@@ -28,6 +28,16 @@
         shape="rounded"
         icon="tuiIconSettingsLarge"
         (click)="toggleSettings()"
+    ></button>
+    <button
+        *ngIf="!isMobile"
+        class="tui-space_left-2"
+        tuiIconButton
+        size="l"
+        appearance="flat"
+        shape="rounded"
+        icon="tuiIconFileLarge"
+        (click)="downloadReport()"
     ></button>
 
     <div class="legend">
@@ -126,7 +136,7 @@
         #viewport
         tuiScrollable
         class="viewport tui-zero-scrollbar"
-        [itemSize]="45"
+        [itemSize]="35"
         [maxBufferPx]="500"
         [minBufferPx]="400"
     >

@@ -17,8 +17,10 @@ import { Model } from 'mongoose';
 import { RequestDto } from '../schemas/request.schema';
 import {
     Buyer,
+    PayType,
     Product,
     Request,
+    RequestStatus,
     User,
     Vehicle,
     Vendor,
@@ -169,6 +171,113 @@ export class RequestController {
         main.getRow(44).addPageBreak();
 
         workbook.calcProperties.fullCalcOnLoad = true;
+
+        const buffer = (await workbook.xlsx.writeBuffer()) as Uint8Array;
+
+        return new StreamableFile(buffer);
+    }
+
+    @Get('report')
+    @HttpCode(HttpStatus.OK)
+    @Header('Content-Type', 'application/xlsx')
+    @Header('Content-Disposition', 'attachment; filename=report.xlsx')
+    async createReport() {
+        const payTypeMapper: { [key in PayType]: string } = {
+            [PayType.Cash]: 'Наличный',
+            [PayType.Cashless]: 'Безналичный',
+        };
+
+        const statusMapper: { [key in RequestStatus]: string } = {
+            [RequestStatus.Framed]: 'Оформлена',
+            [RequestStatus.Appointed]: 'Назначена',
+            [RequestStatus.InTransit]: 'В пути',
+            [RequestStatus.Executed]: 'Исполнена',
+            [RequestStatus.Canceled]: 'Отменена',
+        };
+
+        const requests = (
+            await this.requestQuery
+                .find({})
+                .populate('buyer')
+                .populate('vendor')
+                .populate('product')
+                .populate('driver')
+                .populate('responsible')
+                .populate('vehicle')
+                .exec()
+        ).map((x) => x.toObject());
+
+        const workbook = new Excel.Workbook();
+        const sheet = workbook.addWorksheet('Отчет');
+
+        const header = [
+            'Номер ТТН',
+            'Статус заявки',
+            'Покупатель',
+            'Продавец',
+            'Водитель',
+            'Ответственный',
+            'Товар',
+            'Объем',
+            'Плотность',
+            'Масса',
+            'Цена',
+            'Стоимость',
+            'Транспорт',
+            'Телефон',
+            'Температура',
+            'Пломба',
+            'Оплата',
+            'Адрес доставки',
+            'Дата поставки',
+            'Дата создания',
+        ];
+
+        header.forEach((h, idx) => {
+            const cell = sheet.getRow(1).getCell(idx + 1);
+            cell.value = h;
+            cell.style = { font: { bold: true } };
+        });
+
+        requests.forEach((i, idx) => {
+            const row = sheet.getRow(idx + 2);
+
+            [
+                i.incId,
+                statusMapper[i.status] ?? 'Оформлена',
+                i.buyer?.name,
+                i.vendor?.name,
+                i.driver?.fio,
+                i.responsible?.fio,
+                i.product?.shortName,
+                i.count,
+                i.density,
+                i.weight,
+                i.price,
+                i.cost,
+                i.vehicle?.number,
+                i.phone,
+                i.temperature,
+                i.plomb,
+                payTypeMapper[i.payType] ?? '',
+                i.address,
+                i.date?.toLocaleDateString('ru-RU') ?? '',
+                i.createdAt?.toLocaleDateString('ru-RU') ?? '',
+            ].forEach((value, idx) => (row.getCell(idx + 1).value = value));
+        });
+
+        sheet.columns.forEach(function (column, i) {
+            if (i !== 0) {
+                let maxLength = 14;
+                column['eachCell']({ includeEmpty: true }, function (cell) {
+                    const columnLength = cell.value?.toString()?.length ?? 0;
+                    if (columnLength > maxLength) {
+                        maxLength = columnLength;
+                    }
+                });
+                column.width = maxLength < 10 ? 10 : maxLength;
+            }
+        });
 
         const buffer = (await workbook.xlsx.writeBuffer()) as Uint8Array;
 

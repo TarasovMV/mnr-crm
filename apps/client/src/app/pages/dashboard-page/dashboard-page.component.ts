@@ -184,6 +184,10 @@ export class DashboardPageComponent {
         return this.userService.checkRole([UserRole.Manager]);
     }
 
+    get isReportAvailable(): boolean {
+        return this.userService.checkRole([UserRole.Counter]);
+    }
+
     get columns(): (keyof Request | 'empty')[] {
         return this.columnNames
             .filter((c) => this.enabledColumnNames.includes(c))
@@ -233,6 +237,10 @@ export class DashboardPageComponent {
         const settings: PageSettings = { columnsSort, columnsEnabled };
 
         localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    }
+
+    downloadReport(): void {
+        this.apiRequest.downloadReport();
     }
 
     private openChat(id: string): void {
