@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # Стек
@@ -10,3 +10,4 @@ sidebar_position: 1
 * Backend-приложение - NestJS
 * База данных - MongoDB 4.4.6
 * Документация - Docosaurus
+* Веб сервер - Nginx

@@ -1,12 +1,8 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
 
-# Полезные команды и учетки
-
-## SSH
-
-ssh root@5.180.136.114 1475963Maxim
+# Полезные команды
 
 ## Nginx config
 Etc -> nginx -> nginx.conf
@@ -30,7 +26,7 @@ docker run -p4200:4200 antantaru/mnr-client
 
 Рестор выполнять в новый докер образ
 
-docker exec -i 1b7818b614d6 sh -c 'mongodump -d mnr-crm -u dbReadWrite -p 1475963Maxim! --archive' > db.dump
+docker exec -i 1b7818b614d6 sh -c 'mongodump -d mnr-crm -u dbReadWrite -p ${PASS} --archive' > db.dump
 docker exec -i 1b7818b614d6 sh -c 'mongorestore --gzip --archive' < db.dump
 
 docker network create -d bridge mnr-crm-net
