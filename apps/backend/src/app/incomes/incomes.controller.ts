@@ -95,7 +95,7 @@ export class IncomesController {
             row.getCell(6).value = i.weight;
             row.getCell(7).value = incomeTypeMapper[i.type];
             row.getCell(8).value = i.driver;
-            row.getCell(9).value = i.date.toLocaleDateString('ru-RU');
+            row.getCell(9).value = i.date?.toLocaleDateString('ru-RU');
         });
 
         sheet.columns.forEach(function (column, i) {
