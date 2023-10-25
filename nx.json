@@ -12,6 +12,7 @@
             "dependencies": "*",
             "devDependencies": "*"
         },
+        "version.json": "*",
         ".eslintrc.json": "*",
         ".github": "*"
     },
