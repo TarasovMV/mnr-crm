@@ -48,13 +48,27 @@ export class ApiRequestService {
             });
     }
 
-    downloadReport(): void {
+    downloadReport(
+        startDate: string | undefined,
+        endDate: string | undefined,
+        columns: string[]
+    ): void {
+        const params = [];
+
+        startDate && params.push(`start=${startDate}`);
+        endDate && params.push(`end=${endDate}`);
+        columns && params.push(`columns=${columns.join(';')}`);
+
         this.http
-            .get(`/api/request/report`, { responseType: 'blob' as 'json' })
+            .get(`/api/request/report?${params.join('&')}`, {
+                responseType: 'blob' as 'json',
+            })
             .subscribe((response: any) => {
                 const dataType = response.type;
                 const binaryData = [];
+
                 binaryData.push(response);
+
                 FileSaver.download(
                     new Blob(binaryData, { type: dataType }),
                     `Отчет по заявкам от ${new Date().toLocaleDateString(

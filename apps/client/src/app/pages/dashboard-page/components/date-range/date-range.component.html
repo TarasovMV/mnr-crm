@@ -1,0 +1,10 @@
+<div class="tui-form">
+    <div class="tui-form__header header">Выберите промежуток времени для выгрузки файла</div>
+    <div class="tui-form__row">
+        <tui-calendar-range (valueChange)="range = $event"></tui-calendar-range>
+    </div>
+    <div class="tui-form__buttons tui-form__buttons_align_end">
+        <button (click)="cancel()" class="tui-form__button" size="m" tuiButton appearance="secondary">Отмена</button>
+        <button (click)="submit()" class="tui-form__button" size="m" tuiButton>{{ buttonName }}</button>
+    </div>
+</div>

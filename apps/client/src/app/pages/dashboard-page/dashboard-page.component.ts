@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Inject,
+    Injector,
+} from '@angular/core';
 import {
     ApiRequestService,
     ReferencesNavigationService,
@@ -28,13 +33,21 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { TUI_IS_MOBILE, TuiDestroyService, tuiPure } from '@taiga-ui/cdk';
+import {
+    TUI_IS_MOBILE,
+    TuiDayRange,
+    TuiDestroyService,
+    tuiPure,
+} from '@taiga-ui/cdk';
 import { columnNameMapper, requestStatusMapper } from './utils';
 import { UserService } from '@mnr-crm/client/services/user.service';
 import { checkRoleUtil } from '../../utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { nameParamsMap } from './constants';
 import { FormControl } from '@angular/forms';
+import { TuiDialogService } from '@taiga-ui/core';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { DateRangeComponent } from './components/date-range/date-range.component';
 
 interface PageSettings {
     columnsSort: readonly string[];
@@ -196,6 +209,9 @@ export class DashboardPageComponent {
 
     constructor(
         @Inject(TUI_IS_MOBILE) readonly isMobile: boolean,
+        @Inject(TuiDialogService)
+        private readonly dialogService: TuiDialogService,
+        private readonly injector: Injector,
         private readonly userService: UserService,
         private readonly router: Router,
         private readonly route: ActivatedRoute,
@@ -240,7 +256,21 @@ export class DashboardPageComponent {
     }
 
     downloadReport(): void {
-        this.apiRequest.downloadReport();
+        this.dialogService
+            .open<TuiDayRange | null>(
+                new PolymorpheusComponent(DateRangeComponent, this.injector),
+                {
+                    size: 'auto',
+                    dismissible: true,
+                }
+            )
+            .subscribe((range) => {
+                const startDate = range?.from.toJSON();
+                const endDate = range?.to.toJSON();
+                const columns = this.columns.filter((c) => c !== 'empty');
+
+                this.apiRequest.downloadReport(startDate, endDate, columns);
+            });
     }
 
     private openChat(id: string): void {

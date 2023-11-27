@@ -20,6 +20,7 @@ import { ColumnNamePipeModule } from './pipes/column-name.pipe';
 import { TuiInputModule } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { DateRangeComponent } from './components/date-range/date-range.component';
 
 @NgModule({
     declarations: [DashboardPageComponent],
@@ -63,6 +64,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
         ScrollingModule,
         TuiScrollbarModule,
         TuiLoaderModule,
+        DateRangeComponent,
     ],
 })
 export class DashboardPageModule {}

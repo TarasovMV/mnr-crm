@@ -9,6 +9,7 @@ import {
     Param,
     Post,
     Put,
+    Query,
     StreamableFile,
     UseGuards,
 } from '@nestjs/common';
@@ -181,7 +182,21 @@ export class RequestController {
     @HttpCode(HttpStatus.OK)
     @Header('Content-Type', 'application/xlsx')
     @Header('Content-Disposition', 'attachment; filename=report.xlsx')
-    async createReport() {
+    async createReport(@Query() query) {
+        const startDate = query.start;
+        const endDate = query.end;
+        const columns = query.columns.split(';');
+
+        const filter =
+            startDate && endDate
+                ? {
+                      createdAt: {
+                          $gte: new Date(startDate),
+                          $lte: new Date(endDate),
+                      },
+                  }
+                : {};
+
         const payTypeMapper: { [key in PayType]: string } = {
             [PayType.Cash]: 'Наличный',
             [PayType.Cashless]: 'Безналичный',
@@ -197,7 +212,7 @@ export class RequestController {
 
         const requests = (
             await this.requestQuery
-                .find({})
+                .find(filter)
                 .populate('buyer')
                 .populate('vendor')
                 .populate('product')
@@ -210,60 +225,64 @@ export class RequestController {
         const workbook = new Excel.Workbook();
         const sheet = workbook.addWorksheet('Отчет');
 
-        const header = [
-            'Номер ТТН',
-            'Статус заявки',
-            'Покупатель',
-            'Продавец',
-            'Водитель',
-            'Ответственный',
-            'Товар',
-            'Объем',
-            'Плотность',
-            'Масса',
-            'Цена',
-            'Стоимость',
-            'Транспорт',
-            'Телефон',
-            'Температура',
-            'Пломба',
-            'Оплата',
-            'Адрес доставки',
-            'Дата поставки',
-            'Дата создания',
-        ];
+        const headerMap = {
+            ['incId']: 'Номер ТТН',
+            ['status']: 'Статус заявки',
+            ['buyer']: 'Покупатель',
+            ['vendor']: 'Продавец',
+            ['driver']: 'Водитель',
+            ['responsible']: 'Ответственный',
+            ['product']: 'Товар',
+            ['count']: 'Объем',
+            ['density']: 'Плотность',
+            ['weight']: 'Масса',
+            ['price']: 'Цена',
+            ['cost']: 'Стоимость',
+            ['vehicle']: 'Транспорт',
+            ['phone']: 'Телефон',
+            ['temperature']: 'Температура',
+            ['plomb']: 'Пломба',
+            ['payType']: 'Оплата',
+            ['address']: 'Адрес доставки',
+            ['date']: 'Дата поставки',
+            ['createdAt']: 'Дата создания',
+        };
 
-        header.forEach((h, idx) => {
+        columns.forEach((c, idx) => {
             const cell = sheet.getRow(1).getCell(idx + 1);
-            cell.value = h;
+            cell.value = headerMap[c];
             cell.style = { font: { bold: true } };
         });
 
         requests.forEach((i, idx) => {
             const row = sheet.getRow(idx + 2);
 
-            [
-                i.incId,
-                statusMapper[i.status] ?? 'Оформлена',
-                i.buyer?.name,
-                i.vendor?.name,
-                i.driver?.fio,
-                i.responsible?.fio,
-                i.product?.shortName,
-                i.count,
-                i.density,
-                i.weight,
-                i.price,
-                i.cost,
-                i.vehicle?.number,
-                i.phone,
-                i.temperature,
-                i.plomb,
-                payTypeMapper[i.payType] ?? '',
-                i.address,
-                i.date?.toLocaleDateString('ru-RU') ?? '',
-                i.createdAt?.toLocaleDateString('ru-RU') ?? '',
-            ].forEach((value, idx) => (row.getCell(idx + 1).value = value));
+            const fieldMap = {
+                ['incId']: i.incId,
+                ['status']: statusMapper[i.status] ?? 'Оформлена',
+                ['buyer']: i.buyer?.name,
+                ['vendor']: i.vendor?.name,
+                ['driver']: i.driver?.fio,
+                ['responsible']: i.responsible?.fio,
+                ['product']: i.product?.shortName,
+                ['count']: i.count,
+                ['density']: i.density,
+                ['weight']: i.weight,
+                ['price']: i.price,
+                ['cost']: i.cost,
+                ['vehicle']: i.vehicle?.number,
+                ['phone']: i.phone,
+                ['temperature']: i.temperature,
+                ['plomb']: i.plomb,
+                ['payType']: payTypeMapper[i.payType] ?? '',
+                ['address']: i.address,
+                ['date']: i.date?.toLocaleDateString('ru-RU') ?? '',
+                ['createdAt']: i.createdAt?.toLocaleDateString('ru-RU') ?? '',
+            };
+
+            columns.forEach(
+                (c, idx) => (row.getCell(idx + 1).value = fieldMap[c])
+            );
         });
 
         sheet.columns.forEach(function (column, i) {

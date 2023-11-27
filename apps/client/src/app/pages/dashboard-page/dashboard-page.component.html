@@ -165,48 +165,50 @@
                 <th [sticky]="true" [style.top.px]="-viewport['_renderedContentOffset']" [sorter]="null" *tuiHead="'empty'" tuiTh class="tui-table__th tui-table__th_last"></th>
             </tr>
             </thead>
-            <tbody *ngIf="(filteredData$ | async | tuiTableSort | tuiMapper: dataTyping) as data" tuiTbody [data]="data">
-            <tr *cdkVirtualFor="let item of data" tuiTr [class]="'tui-table__tr tui-table__tr_border_none color_' + statusStyleMapper[item.status]">
-                <td *tuiCell="'incId'" tuiTd class="tui-table__td tui-table__td_first">
-                    <div [class]="'table-status color_' + statusStyleMapper[item.status]"></div>
-                    {{item.incId}}
-                </td>
-                <td *tuiCell="'buyer'" tuiTd class="tui-table__td">{{item.buyer}}</td>
-                <td *tuiCell="'vendor'" tuiTd class="tui-table__td">{{item.vendor}}</td>
-                <td *tuiCell="'driver'" tuiTd class="tui-table__td">{{item.driver}}</td>
-                <td *tuiCell="'responsible'" tuiTd class="tui-table__td">{{item.responsible}}</td>
-                <td *tuiCell="'product'" tuiTd class="tui-table__td">{{item.product}}</td>
-                <td *tuiCell="'count'" tuiTd class="tui-table__td">{{item.count}}</td>
-                <td *tuiCell="'density'" tuiTd class="tui-table__td">{{item.density}}</td>
-                <td *tuiCell="'weight'" tuiTd class="tui-table__td">{{item.weight}}</td>
-                <td *tuiCell="'price'" tuiTd class="tui-table__td">{{item.price}}</td>
-                <td *tuiCell="'cost'" tuiTd class="tui-table__td">{{item.cost}}</td>
-                <td *tuiCell="'vehicle'" tuiTd class="tui-table__td">{{item.vehicle}}</td>
-                <td *tuiCell="'phone'" tuiTd class="tui-table__td">{{item.phone}}</td>
-                <td *tuiCell="'temperature'" tuiTd class="tui-table__td">{{item.temperature}}</td>
-                <td *tuiCell="'plomb'" tuiTd class="tui-table__td">{{item.plomb}}</td>
-                <td *tuiCell="'payType'" tuiTd class="tui-table__td">{{item.payType | payTypeStringify}}</td>
-                <td *tuiCell="'address'" tuiTd class="tui-table__td">{{item.address}}</td>
-                <td *tuiCell="'date'" tuiTd class="tui-table__td">{{item.date | date:"dd.MM.yyyy"}}</td>
-                <td *tuiCell="'createdAt'" tuiTd class="tui-table__td">{{item.createdAt | date:"dd.MM.yyyy"}}</td>
-                <td *tuiCell="'empty'" tuiTd class="tui-table__td tui-table__td_last">
-                    <tui-hosted-dropdown
-                        [(open)]="menu[item.id!]"
-                        class="menu tui-space_right-1"
-                        tuiDropdownAlign="left"
-                        [content]="menuTpl"
-                    >
-                        <button
-                            tuiIconButton
-                            icon="tuiIconMoreVer"
-                            shape="rounded"
-                            appearance="icon"
-                            size="xs"
-                        ></button>
-                    </tui-hosted-dropdown>
-                </td>
-            </tr>
-            </tbody>
+            <ng-container *ngIf="filteredData$ | async as filteredData">
+                <tbody *ngIf="(filteredData | tuiTableSort | tuiMapper: dataTyping) as data" tuiTbody [data]="data">
+                <tr *cdkVirtualFor="let item of data" tuiTr [class]="'tui-table__tr tui-table__tr_border_none color_' + statusStyleMapper[item.status]">
+                    <td *tuiCell="'incId'" tuiTd class="tui-table__td tui-table__td_first">
+                        <div [class]="'table-status color_' + statusStyleMapper[item.status]"></div>
+                        {{item.incId}}
+                    </td>
+                    <td *tuiCell="'buyer'" tuiTd class="tui-table__td">{{item.buyer}}</td>
+                    <td *tuiCell="'vendor'" tuiTd class="tui-table__td">{{item.vendor}}</td>
+                    <td *tuiCell="'driver'" tuiTd class="tui-table__td">{{item.driver}}</td>
+                    <td *tuiCell="'responsible'" tuiTd class="tui-table__td">{{item.responsible}}</td>
+                    <td *tuiCell="'product'" tuiTd class="tui-table__td">{{item.product}}</td>
+                    <td *tuiCell="'count'" tuiTd class="tui-table__td">{{item.count}}</td>
+                    <td *tuiCell="'density'" tuiTd class="tui-table__td">{{item.density}}</td>
+                    <td *tuiCell="'weight'" tuiTd class="tui-table__td">{{item.weight}}</td>
+                    <td *tuiCell="'price'" tuiTd class="tui-table__td">{{item.price}}</td>
+                    <td *tuiCell="'cost'" tuiTd class="tui-table__td">{{item.cost}}</td>
+                    <td *tuiCell="'vehicle'" tuiTd class="tui-table__td">{{item.vehicle}}</td>
+                    <td *tuiCell="'phone'" tuiTd class="tui-table__td">{{item.phone}}</td>
+                    <td *tuiCell="'temperature'" tuiTd class="tui-table__td">{{item.temperature}}</td>
+                    <td *tuiCell="'plomb'" tuiTd class="tui-table__td">{{item.plomb}}</td>
+                    <td *tuiCell="'payType'" tuiTd class="tui-table__td">{{item.payType | payTypeStringify}}</td>
+                    <td *tuiCell="'address'" tuiTd class="tui-table__td">{{item.address}}</td>
+                    <td *tuiCell="'date'" tuiTd class="tui-table__td">{{item.date | date:"dd.MM.yyyy"}}</td>
+                    <td *tuiCell="'createdAt'" tuiTd class="tui-table__td">{{item.createdAt | date:"dd.MM.yyyy"}}</td>
+                    <td *tuiCell="'empty'" tuiTd class="tui-table__td tui-table__td_last">
+                        <tui-hosted-dropdown
+                            [(open)]="menu[item.id!]"
+                            class="menu tui-space_right-1"
+                            tuiDropdownAlign="left"
+                            [content]="menuTpl"
+                        >
+                            <button
+                                tuiIconButton
+                                icon="tuiIconMoreVer"
+                                shape="rounded"
+                                appearance="icon"
+                                size="xs"
+                            ></button>
+                        </tui-hosted-dropdown>
+                    </td>
+                </tr>
+                </tbody>
+            </ng-container>
         </table>
     </cdk-virtual-scroll-viewport>
 </tui-scrollbar>
