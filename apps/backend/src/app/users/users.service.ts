@@ -1,16 +1,17 @@
-import {Injectable} from '@nestjs/common';
-import {UserDto} from '../schemas/user.schema';
-import {JwtService} from '@nestjs/jwt';
+import { Injectable } from '@nestjs/common';
+import { UserDto } from '../schemas/user.schema';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import {InjectModel} from '@nestjs/mongoose';
-import {Model} from 'mongoose';
-import {User} from '@mnr-crm/shared-models';
-import {dbNameMapper} from '../utils/db-name.util';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from '@mnr-crm/shared-models';
+import { dbNameMapper } from '../utils/db-name.util';
 
 @Injectable()
 export class UsersService {
     constructor(
-        @InjectModel(dbNameMapper[UserDto.name]) private readonly usersQuery: Model<UserDto>,
+        @InjectModel(dbNameMapper[UserDto.name])
+        private readonly usersQuery: Model<UserDto>,
         private readonly jwtService: JwtService
     ) {}
 
@@ -34,17 +35,28 @@ export class UsersService {
     async updateUser(id: string, user: User): Promise<User> {
         user.password = await bcrypt.hash(user.password, 10);
 
-        return this.usersQuery.findOneAndUpdate({_id: id }, user);
+        return this.usersQuery.findOneAndUpdate({ _id: id }, user);
     }
 
-    async validateUser(username: string, password: string): Promise<User | null> {
-        const user = (await this.usersQuery.findOne({username}).exec())?.toObject() as User;
+    async validateUser(
+        username: string,
+        password: string
+    ): Promise<User | null> {
+        const user = (
+            await this.usersQuery.findOne({ username }).exec()
+        )?.toObject() as User;
+
+        console.log('auth', user);
 
         if (!user) {
             return null;
         }
 
+        console.log('auth', 'exist');
+
         const passwordValid = await bcrypt.compare(password, user.password);
+
+        console.log('passwordValid');
 
         if (passwordValid) {
             user.token = this.jwtService.sign({
