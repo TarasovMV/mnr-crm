@@ -55,7 +55,10 @@ export class RequestFormComponent implements OnInit {
         responsible: this.userService.checkRole([UserRole.Admin]),
         vendor: this.userService.checkRole([UserRole.Manager]),
         buyer: this.userService.checkRole([UserRole.Manager]),
-        product: this.userService.checkRole([UserRole.Manager]),
+        product: this.userService.checkRole([
+            UserRole.Manager,
+            UserRole.Storekeeper,
+        ]),
         count: this.userService.checkRole([
             UserRole.Manager,
             UserRole.Storekeeper,
@@ -71,8 +74,14 @@ export class RequestFormComponent implements OnInit {
         weight: false,
         density: this.userService.checkRole([UserRole.Storekeeper]),
         temperature: this.userService.checkRole([UserRole.Storekeeper]),
-        vehicle: this.userService.checkRole([UserRole.Logistician]),
-        driver: this.userService.checkRole([UserRole.Logistician]),
+        vehicle: this.userService.checkRole([
+            UserRole.Logistician,
+            UserRole.Storekeeper,
+        ]),
+        driver: this.userService.checkRole([
+            UserRole.Logistician,
+            UserRole.Storekeeper,
+        ]),
         plomb: this.userService.checkRole([UserRole.Storekeeper]),
     } as const;
 

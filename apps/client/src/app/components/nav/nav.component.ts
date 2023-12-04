@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
 import { UserService } from '@mnr-crm/client/services/user.service';
 import { UserRole } from '@mnr-crm/shared-models';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'mnr-crm-nav',
@@ -31,12 +31,12 @@ export class NavComponent {
         {
             label: 'Сотрудники',
             url: 'employers',
-            condition: () => this.userService.checkRole([]),
+            condition: () => this.userService.checkRole([UserRole.Storekeeper]),
         },
         {
             label: 'Транспортные средства',
             url: 'vehicles',
-            condition: () => this.userService.checkRole([]),
+            condition: () => this.userService.checkRole([UserRole.Storekeeper]),
         },
         {
             label: 'Продукция',
@@ -73,7 +73,10 @@ export class NavComponent {
     );
 
     get isReferencesAvailable(): boolean {
-        return this.userService.checkRole([UserRole.Manager]);
+        return this.userService.checkRole([
+            UserRole.Manager,
+            UserRole.Storekeeper,
+        ]);
     }
 
     get isIncomeAvailable(): boolean {

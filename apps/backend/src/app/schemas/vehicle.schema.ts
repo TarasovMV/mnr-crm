@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import {Vehicle} from '@mnr-crm/shared-models';
-import {DEFAULT_SCHEMA_PARAMS} from './consts';
+import { Vehicle } from '@mnr-crm/shared-models';
+import { DEFAULT_SCHEMA_PARAMS } from './consts';
 
 @Schema(DEFAULT_SCHEMA_PARAMS)
 export class VehicleDto extends Document implements Vehicle {
@@ -9,16 +9,16 @@ export class VehicleDto extends Document implements Vehicle {
     brand: string;
 
     @Prop()
-    model: string;
+    model?: string;
 
     @Prop()
     number: string;
 
     @Prop()
-    trail: string;
+    trail?: string;
 
     @Prop()
-    trailNumber: string;
+    trailNumber?: string;
 }
 
 export const VehicleSchema = SchemaFactory.createForClass(VehicleDto);

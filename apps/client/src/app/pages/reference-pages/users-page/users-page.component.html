@@ -66,6 +66,7 @@
         <td class="tui-table__td">{{item.role | userRoleStringify}}</td>
         <td class="tui-table__td tui-table__td_last">
             <tui-hosted-dropdown
+                *ngIf="showMenu(item)"
                 [(open)]="menu[item.id!]"
                 class="menu tui-space_right-1"
                 tuiDropdownAlign="left"

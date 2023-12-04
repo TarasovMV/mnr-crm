@@ -191,14 +191,13 @@ export class DashboardPageComponent {
         (acc, next) => ({ ...acc, [next[0]]: next[1].color }),
         {}
     ) as any; // TODO
-    // ) as { [key in RequestStatus]: string };
 
     get isCreateAvailable(): boolean {
         return this.userService.checkRole([UserRole.Manager]);
     }
 
     get isReportAvailable(): boolean {
-        return this.userService.checkRole([UserRole.Counter]);
+        return this.userService.checkRole([UserRole.Counter, UserRole.Manager]);
     }
 
     get columns(): (keyof Request | 'empty')[] {

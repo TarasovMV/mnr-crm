@@ -20,7 +20,7 @@
         (click)="toggleFilters()"
     ></button>
     <button
-        *ngIf="!isMobile && isReportAvailable"
+        *ngIf="!isMobile"
         class="tui-space_left-2"
         tuiIconButton
         size="l"
@@ -30,7 +30,7 @@
         (click)="toggleSettings()"
     ></button>
     <button
-        *ngIf="!isMobile"
+        *ngIf="!isMobile && isReportAvailable"
         class="tui-space_left-2"
         tuiIconButton
         size="l"

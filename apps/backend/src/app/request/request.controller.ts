@@ -190,7 +190,7 @@ export class RequestController {
         const filter =
             startDate && endDate
                 ? {
-                      createdAt: {
+                      date: {
                           $gte: new Date(startDate),
                           $lte: new Date(endDate),
                       },
