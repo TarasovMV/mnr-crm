@@ -213,6 +213,7 @@ export class RequestController {
         const requests = (
             await this.requestQuery
                 .find(filter)
+                .sort({ date: 'desc' })
                 .populate('buyer')
                 .populate('vendor')
                 .populate('product')
