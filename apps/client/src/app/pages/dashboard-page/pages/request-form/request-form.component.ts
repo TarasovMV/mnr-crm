@@ -55,6 +55,7 @@ export class RequestFormComponent implements OnInit {
         responsible: this.userService.checkRole([UserRole.Admin]),
         vendor: this.userService.checkRole([UserRole.Manager]),
         buyer: this.userService.checkRole([UserRole.Manager]),
+        payer: this.userService.checkRole([UserRole.Manager]),
         product: this.userService.checkRole([
             UserRole.Manager,
             UserRole.Storekeeper,
@@ -94,6 +95,7 @@ export class RequestFormComponent implements OnInit {
         ]),
         vendor: new FormControl<ReferenceItem | null>(null),
         buyer: new FormControl<ReferenceItem | null>(null),
+        payer: new FormControl<ReferenceItem | null>(null),
         address: new FormControl<string | null>(null),
         phone: new FormControl<string | null>(''),
         product: new FormControl<ReferenceItem | null>(null),
@@ -206,6 +208,7 @@ export class RequestFormComponent implements OnInit {
             responsible: formValue.responsible?.id,
             vendor: formValue.vendor?.id,
             buyer: formValue.buyer?.id,
+            payer: formValue.payer?.id,
             product: formValue.product?.id,
             vehicle: formValue.vehicle?.id,
             driver: formValue.driver?.id,
@@ -289,6 +292,9 @@ export class RequestFormComponent implements OnInit {
                         ) ?? null,
                     buyer:
                         references.buyers.find((u) => u.id === request.buyer) ??
+                        null,
+                    payer:
+                        references.buyers.find((u) => u.id === request.payer) ??
                         null,
                     address: request.address,
                     phone: request.phone,

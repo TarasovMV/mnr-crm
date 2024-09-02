@@ -107,6 +107,13 @@ export class DashboardPageComponent {
                                 r.buyer,
                                 (x) => x.name
                             ),
+                            payer:
+                                r.payer &&
+                                this.handleReferenceItemById<Buyer>(
+                                    references.buyers,
+                                    r.payer,
+                                    (x) => x.name
+                                ),
                             vehicle: this.handleReferenceItemById<Vehicle>(
                                 references.vehicles,
                                 r.vehicle,

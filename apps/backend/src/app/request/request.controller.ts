@@ -83,12 +83,14 @@ export class RequestController {
             counter: 'B20',
             temperature: 'B21',
             plomb: 'B22',
+            payer: 'B23',
         };
 
         const request = (
             await this.requestQuery
                 .findOne({ _id: params.id })
                 .populate('buyer')
+                .populate('payer')
                 .populate('vendor')
                 .populate('product')
                 .populate('driver')
@@ -122,6 +124,12 @@ export class RequestController {
             companyStringify(request.buyer as unknown as Buyer)
         );
         setValue(
+            cellMapper.payer,
+            request.payer
+                ? companyStringify(request.payer as unknown as Buyer)
+                : companyStringify(request.buyer as unknown as Buyer)
+        );
+        setValue(
             cellMapper.vendor,
             companyStringify(request.vendor as unknown as Vendor)
         );
@@ -138,11 +146,11 @@ export class RequestController {
         setValue(cellMapper.date_year, new Date(request.date).getFullYear());
         setValue(
             cellMapper.product_code,
-            (request.product as unknown as Product).code
+            (request.product as unknown as Product)?.code
         );
         setValue(
             cellMapper.product,
-            (request.product as unknown as Product).name
+            (request.product as unknown as Product)?.name
         );
         setValue(cellMapper.count, request.count);
         setValue(cellMapper.density, request.density);
@@ -151,19 +159,19 @@ export class RequestController {
         setValue(cellMapper.driver, (request.driver as unknown as User)?.fio);
         setValue(
             cellMapper.vehicle_brand,
-            (request.vehicle as unknown as Vehicle).brand
+            (request.vehicle as unknown as Vehicle)?.brand
         );
         setValue(
             cellMapper.vehicle_number,
-            (request.vehicle as unknown as Vehicle).number
+            (request.vehicle as unknown as Vehicle)?.number
         );
         setValue(
             cellMapper.vehicle_trail,
-            (request.vehicle as unknown as Vehicle).trail
+            (request.vehicle as unknown as Vehicle)?.trail
         );
         setValue(
             cellMapper.vehicle_trail_number,
-            (request.vehicle as unknown as Vehicle).trailNumber
+            (request.vehicle as unknown as Vehicle)?.trailNumber
         );
         setValue(cellMapper.counter, COUNTER);
         setValue(cellMapper.temperature, request.temperature);

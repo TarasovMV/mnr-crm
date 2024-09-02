@@ -71,6 +71,11 @@
         ></mnr-crm-item-card-prop>
 
         <mnr-crm-item-card-prop
+            label="Покупатель"
+            [description]="item.payer"
+        ></mnr-crm-item-card-prop>
+
+        <mnr-crm-item-card-prop
             label="Продавец"
             [description]="item.vendor"
         ></mnr-crm-item-card-prop>
@@ -145,6 +150,7 @@
             <tr tuiThGroup class="tui-table__tr tui-table__tr_border_none">
                 <th [sticky]="true" [style.top.px]="-viewport['_renderedContentOffset']" *tuiHead="'incId'" tuiTh class="tui-table__th tui-table__th_first">{{'incId' | columnName}}</th>
                 <th [sticky]="true" [style.top.px]="-viewport['_renderedContentOffset']" [sorter]="null" *tuiHead="'buyer'" tuiTh class="tui-table__th">{{'buyer' | columnName}}</th>
+                <th [sticky]="true" [style.top.px]="-viewport['_renderedContentOffset']" [sorter]="null" *tuiHead="'payer'" tuiTh class="tui-table__th">{{'payer' | columnName}}</th>
                 <th [sticky]="true" [style.top.px]="-viewport['_renderedContentOffset']" [sorter]="null" *tuiHead="'vendor'" tuiTh class="tui-table__th">{{'vendor' | columnName}}</th>
                 <th [sticky]="true" [style.top.px]="-viewport['_renderedContentOffset']" [sorter]="null" *tuiHead="'driver'" tuiTh class="tui-table__th">{{'driver' | columnName}}</th>
                 <th [sticky]="true" [style.top.px]="-viewport['_renderedContentOffset']" [sorter]="null" *tuiHead="'responsible'" tuiTh class="tui-table__th">{{'responsible' | columnName}}</th>
@@ -173,6 +179,7 @@
                         {{item.incId}}
                     </td>
                     <td *tuiCell="'buyer'" tuiTd class="tui-table__td">{{item.buyer}}</td>
+                    <td *tuiCell="'payer'" tuiTd class="tui-table__td">{{item.payer}}</td>
                     <td *tuiCell="'vendor'" tuiTd class="tui-table__td">{{item.vendor}}</td>
                     <td *tuiCell="'driver'" tuiTd class="tui-table__td">{{item.driver}}</td>
                     <td *tuiCell="'responsible'" tuiTd class="tui-table__td">{{item.responsible}}</td>

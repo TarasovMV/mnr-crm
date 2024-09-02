@@ -100,6 +100,27 @@
 
             <div class="tui-form__row">
                 <tui-combo-box
+                    [readOnly]="!displayedControls.payer"
+                    [strict]="true"
+                    formControlName="payer"
+                    [stringify]="refStringify"
+                >
+                    Плательщик
+                    <input tuiTextfield/>
+                    <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="references!.buyers | tuiFilterByInputWith: refStringify"
+                        [itemContent]="refStringify | tuiStringifyContent"
+                    ></tui-data-list-wrapper>
+                </tui-combo-box>
+                <tui-error
+                    formControlName="payer"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+
+            <div class="tui-form__row">
+                <tui-combo-box
                     [readOnly]="!displayedControls.vehicle"
                     [strict]="true"
                     formControlName="vehicle"

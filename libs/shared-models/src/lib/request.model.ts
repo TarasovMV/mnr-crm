@@ -17,6 +17,7 @@ export interface Request {
     responsible: string;
     vendor: string;
     buyer: string;
+    payer?: string;
     vehicle: string;
     driver: string;
     product: string;

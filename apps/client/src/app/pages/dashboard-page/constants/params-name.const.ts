@@ -3,6 +3,7 @@ import { Request } from '@mnr-crm/shared-models';
 export const nameParamsMap = new Map<string, keyof Request | 'empty'>([
     ['Номер ТТН', 'incId'],
     ['Покупатель', 'buyer'],
+    ['Плательщик', 'payer'],
     ['Продавец', 'vendor'],
     ['Водитель', 'driver'],
     ['Ответственный', 'responsible'],
