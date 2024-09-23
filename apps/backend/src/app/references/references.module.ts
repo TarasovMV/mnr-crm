@@ -9,11 +9,13 @@ import { VendorDto, VendorSchema } from '../schemas/vendor.schema';
 import { dbNameMapper } from '../utils/db-name.util';
 import { ReferencesController } from './references.controller';
 import { ReferencesService } from './references.service';
+import {HttpModule} from '@nestjs/axios';
 
 @Module({
     providers: [ReferencesService],
     controllers: [ReferencesController],
     imports: [
+        HttpModule,
         MongooseModule.forFeature([
             { name: dbNameMapper[BuyerDto.name], schema: BuyerSchema },
             { name: dbNameMapper[ProductDto.name], schema: ProductSchema },

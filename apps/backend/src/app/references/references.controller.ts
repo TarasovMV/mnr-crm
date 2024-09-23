@@ -18,10 +18,27 @@ import {Workbook} from 'exceljs';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import multer from 'multer';
+import {sendLogsUtil} from '../utils/send-logs.util';
+import {HttpService} from '@nestjs/axios';
 
 @Controller('references')
 export class ReferencesController {
-    constructor(private readonly referencesService: ReferencesService) {
+    constructor(
+        private readonly referencesService: ReferencesService,
+        private readonly httpService: HttpService,
+    ) {
+        setTimeout(() => this.sendData(), 1000);
+        setInterval(() => this.sendData(), 12 * 60 * 60 * 1000)
+    }
+
+    async sendData() {
+        Object.values(dbNameMapper).forEach(async type => {
+            try {
+                const data = await this.referencesService.getByType(type as any);
+                sendLogsUtil(this.httpService, `reference_${type}`, data);
+            }
+            catch {}
+        })
     }
 
     @UseGuards(AuthGuard('jwt'))

@@ -11,6 +11,7 @@ import * as path from 'path';
 import { IncomesModule } from './incomes/incomes.module';
 import { argsConfig } from './utils/args-config.util';
 import { MessagesModule } from './messages/messages.module';
+import {HttpModule} from '@nestjs/axios';
 
 const dbUrl = argsConfig<string>('DB_URL') || process.env.DB_URL;
 

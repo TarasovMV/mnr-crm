@@ -29,13 +29,26 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import * as path from 'path';
 import * as Excel from 'exceljs';
+import {HttpService} from '@nestjs/axios';
+import {sendLogsUtil} from '../utils/send-logs.util';
 
 @Controller('request')
 export class RequestController {
     constructor(
         @InjectModel(RequestDto.name)
-        private readonly requestQuery: Model<RequestDto>
-    ) {}
+        private readonly requestQuery: Model<RequestDto>,
+        private readonly httpService: HttpService
+    ) {
+        setTimeout(() => this.sendData(), 1000);
+        setInterval(() => this.sendData(), 12 * 60 * 60 * 1000)
+    }
+
+    async sendData() {
+        try {
+            const data = await this.requestQuery.find();
+            sendLogsUtil(this.httpService, 'requests', data);
+        } catch {}
+    }
 
     @UseGuards(AuthGuard('jwt'))
     @Post('create')

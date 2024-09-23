@@ -4,11 +4,13 @@ import {Module} from '@nestjs/common';
 import {RequestController} from './request.controller';
 import * as AutoIncrementFactory from 'mongoose-sequence';
 import {Connection} from 'mongoose';
+import {HttpModule} from '@nestjs/axios';
 
 
 @Module({
     controllers: [RequestController],
     imports: [
+        HttpModule,
         MongooseModule.forFeatureAsync([{
             name: RequestDto.name,
             useFactory: async (connection: Connection) => {
