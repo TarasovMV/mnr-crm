@@ -57,7 +57,7 @@ jobs:
             docker stop client-container
             docker rmi antantaru/mnr-client:latest
             docker pull antantaru/mnr-client
-            docker run -d -p4200:4200 --name client-container --rm antantaru/mnr-client
+            docker run -d -p4200:4200 --name client-container --restart always --rm antantaru/mnr-client
           username: root
           host: ${{ secrets.SSH_HOST }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
@@ -96,7 +96,7 @@ jobs:
             docker stop backend-container
             docker rmi antantaru/mnr-backend:latest
             docker pull antantaru/mnr-backend
-            docker run -d --env-file="docker_vars.env" --network="host" -v /usr/share/nginx/cdn/chat:/usr/src/app/dist/apps/backend/chat-images --name backend-container --rm antantaru/mnr-backend
+            docker run -d --env-file="docker_vars.env" --network="host" -v /usr/share/nginx/cdn/chat:/usr/src/app/dist/apps/backend/chat-images --name backend-container --restart always --rm antantaru/mnr-backend
           username: root
           host: ${{ secrets.SSH_HOST }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
@@ -135,7 +135,7 @@ jobs:
             docker stop docs-container
             docker rmi antantaru/mnr-docs:latest
             docker pull antantaru/mnr-docs
-            docker run -d -p3000:3000 --name docs-container --rm antantaru/mnr-docs
+            docker run -d -p3000:3000 --name docs-container --restart always --rm antantaru/mnr-docs
           username: root
           host: ${{ secrets.SSH_HOST }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
