@@ -96,7 +96,7 @@ jobs:
             docker stop backend-container
             docker rmi antantaru/mnr-backend:latest
             docker pull antantaru/mnr-backend
-            docker run -d --env-file="docker_vars.env" --network="host" -v /usr/share/nginx/cdn/chat:/usr/src/app/dist/apps/backend/chat-images --name backend-container --restart always --rm antantaru/mnr-backend
+            docker run -d --env-file="docker_vars.env" --network="host" -v /usr/share/nginx/cdn/chat:/usr/src/app/dist/apps/backend/chat-images --name backend-container --restart always antantaru/mnr-backend
           username: root
           host: ${{ secrets.SSH_HOST }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
