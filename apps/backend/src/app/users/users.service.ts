@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserDto } from '../schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '@mnr-crm/shared-models';
@@ -54,7 +54,13 @@ export class UsersService {
 
         console.log('auth', 'exist');
 
-        const passwordValid = await bcrypt.compare(password, user.password);
+        let passwordValid = false;
+
+        try {
+            passwordValid = await bcrypt.compare(password, user.password);
+        } catch (e) {
+            console.log('bcrypt error', e)
+        }
 
         console.log('passwordValid');
 
