@@ -1,0 +1,16 @@
+{
+    "headers": {
+        "normalizedNames": {},
+        "lazyUpdate": null
+    },
+    "status": 400,
+    "statusText": "Bad Request",
+    "url": "http://localhost:4200/api/users/change-password",
+    "ok": false,
+    "name": "HttpErrorResponse",
+    "message": "Http failure response for http://localhost:4200/api/users/change-password: 400 Bad Request",
+    "error": {
+        "statusCode": 400,
+        "message": "Неверный пароль"
+    }
+}

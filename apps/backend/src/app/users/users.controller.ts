@@ -1,4 +1,16 @@
-import {Body, Controller, Post, UseGuards, Request, Get, HttpCode, Put, Param} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Post,
+    UseGuards,
+    Request,
+    Get,
+    HttpCode,
+    Put,
+    Param,
+    HttpException,
+    HttpStatus
+} from '@nestjs/common';
 import {UsersService} from './users.service';
 import {AuthGuard} from '@nestjs/passport';
 import {User} from '@mnr-crm/shared-models';
@@ -40,6 +52,20 @@ export class UsersController {
     @UseGuards(AuthGuard('jwt'))
     @Get('current')
     getUserInfo(@Request() req) {
+        return req.user;
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('change-password')
+    async changePassword(@Request() req, @Body() body) {
+        console.log('change-password', req.user)
+
+        const isValid = await this.usersService.validateUser(req.user.username, body.password);
+        if (!isValid) {
+            throw new HttpException('Неверный пароль', HttpStatus.BAD_REQUEST);
+        }
+        await this.usersService.changePassword(req.user.id, body.newPassword);
+
         return req.user;
     }
 }

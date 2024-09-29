@@ -16,6 +16,13 @@ export class ApiAuthService {
         });
     }
 
+    changePassword(password: string, newPassword: string): Observable<any> {
+        return this.http.post('/api/users/change-password', {
+            password,
+            newPassword
+        })
+    }
+
     current(): Observable<User> {
         return this.http.get<User>('/api/users/current');
     }

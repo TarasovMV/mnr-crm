@@ -39,6 +39,12 @@ export class UsersService {
         return this.usersQuery.findOneAndUpdate({ _id: id }, user);
     }
 
+    async changePassword(id: string, passwordStr: string): Promise<User> {
+        const password = await bcrypt.hash(passwordStr, 10);
+
+        return this.usersQuery.findOneAndUpdate({ _id: id }, { password });
+    }
+
     async validateUser(
         username: string,
         password: string
